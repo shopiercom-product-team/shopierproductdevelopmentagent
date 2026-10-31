@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ürün yorumları · Ürün akışı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--brand-500:#6700FF;--ink-900:#0B0F34;--ink-700:#2F3352;--ink-500:#545670;--ink-400:#7B7D92;--line-200:#E2E2E5;--surface-100:#F7F7F7;--surface-0:#FFFFFF}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-0);color:var(--ink-900);font-family:"Urbanist",-apple-system,"Segoe UI",sans-serif;font-weight:500;line-height:1.5}
+main{max-width:1100px;margin:0 auto;padding:30px 22px 60px}
+h1{font-size:32px;line-height:40px;font-weight:700;margin:0 0 8px}
+h2{font-size:20px;font-weight:700;margin:0 0 6px}
+p{margin:0 0 12px;color:var(--ink-500);font-size:16px}
+.lead{margin-bottom:30px}
+.akis{border:1px solid var(--line-200);border-radius:16px;padding:20px;margin-bottom:20px}
+.diagram{overflow-x:auto;background:var(--surface-100);border-radius:11px;padding:15px;-webkit-overflow-scrolling:touch}
+.mermaid{margin:0;min-width:640px;text-align:center;font-family:inherit}
+.mermaid:not([data-processed]){text-align:left;font-size:12px;color:var(--ink-400);white-space:pre}
+ul,ol{color:var(--ink-500);padding-left:20px;margin:0 0 12px}
+li{margin-bottom:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;border-bottom:1px solid var(--line-200);padding:8px 10px 8px 0;vertical-align:top;color:var(--ink-500)}
+th{color:var(--ink-900);font-weight:600}
+.meta{font-size:14px;color:var(--ink-400)}
+@media (max-width:600px){main{padding:22px 16px 40px}h1{font-size:26px;line-height:32px}.akis{padding:15px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Ürün yorumları · Ürün akışı</h1>
+<p class="lead">Etkilenen her kullanıcı tipi için uçtan uca akış: alıcı (yorum yazma), alıcı (yorumları görme), satıcı ve Shopier operasyon. Diyagramlar <code>prd-urun-yorumlari.md</code> ile aynıdır. Kaynak: PRD taslak v0.2.</p>
+<section class="akis">
+<h2>Akış 1 · Siparişi tamamlanmış alıcı: yorum yazma</h2>
+<p>Sipariş sonrası davet bağlantısı açıldığında bağlantının geçerliliği, puan, form ve gönderim sonucu alıcının ne göreceğini ve akışın nerede biteceğini belirler.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TD
+  A[&quot;Sipariş tamamlanır, alıcıya sipariş sonrası davet gider&quot;] --&gt; B[&quot;Alıcı davet bağlantısını açar, giriş gerekmez&quot;]
+  B --&gt; C{&quot;Bağlantı geçerli mi?&quot;}
+  C -- Hayır --&gt; X[&quot;Hata · bağlantı geçersiz: yorum yazılamaz, Dükkana git&quot;]
+  X --&gt; XE[&quot;Akış biter: alıcı dükkana döner&quot;]
+  C -- Evet --&gt; D[&quot;Yorum yaz · boş: ürün, puan seçici, metin alanı, fotoğraf ekleme&quot;]
+  D --&gt; E{&quot;Puan seçildi mi?&quot;}
+  E -- Hayır --&gt; F[&quot;Yorumu gönder kullanılamaz&quot;]
+  F -.-&gt; D
+  E -- Evet --&gt; G[&quot;Yorum yaz · dolu: metin ve isteğe bağlı fotoğraf&quot;]
+  G --&gt; H{&quot;Metin ve fotoğraf geçerli mi?&quot;}
+  H -- Hayır --&gt; I[&quot;Hata · form: alan hatası ve yardımcı metin, yazılanlar korunur&quot;]
+  I -.-&gt; G
+  H -- Evet --&gt; J{&quot;Gönderim başarılı mı?&quot;}
+  J -- Hayır --&gt; K[&quot;Hata · gönderilemedi: Tekrar dene veya Vazgeç, form içeriği korunur&quot;]
+  K -. Tekrar dene .-&gt; G
+  K -- Vazgeç --&gt; V[&quot;Akış biter: alıcı yorum yazmadan ayrılır&quot;]
+  J -- Evet --&gt; L[&quot;Başarı: Teşekkürler, yorumunuz alındı&quot;]
+  L --&gt; M[&quot;Ürüne git: alıcı ürün detayına döner&quot;]
+  L --&gt; N[&quot;Yorum Shopier moderasyonuna girer, yayın zamanı moderasyon kararına bağlıdır&quot;]
+  M --&gt; ME[&quot;Akış biter: alıcı ürün detayında&quot;]
+</pre></div>
+</section>
+<section class="akis">
+<h2>Akış 2 · Ürün sayfasını gezen alıcı: yorumları görme</h2>
+<p>Ürün detay açıldığında yorumların yüklenmesi, yorum olup olmaması ve seçilen filtre alıcının Yorumlar bölümünde ne göreceğini belirler.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TD
+  A[&quot;Alıcı ürün detay sayfasını açar&quot;] --&gt; B[&quot;Ürün sayfası yüklenir, Yorumlar bölümü ayrıca yüklenir: Yükleniyor&quot;]
+  B --&gt; C{&quot;Yorumlar yüklendi mi?&quot;}
+  C -- Hayır --&gt; X[&quot;Hata · yorumlar yüklenemedi: Tekrar dene&quot;]
+  X -.-&gt; B
+  C -- Evet --&gt; D{&quot;Yayımlanmış yorum var mı?&quot;}
+  D -- Hayır --&gt; Y[&quot;Boş durum · yorum yok: puan satırı gizli, kimin yorum yazabileceği bilgisi&quot;]
+  Y --&gt; ZSON[&quot;Akış biter: alıcı ürün sayfasında gezinmeye devam eder&quot;]
+  D -- Evet --&gt; E[&quot;Ürün detay · puan özeti ve Yorumlar bölümü: ortalama, dağılım, en fazla 3 yorum&quot;]
+  E --&gt; F{&quot;Alıcı ne yapar?&quot;}
+  F -- Gezinmeye devam eder --&gt; ZSON
+  F -- Yorum fotoğrafına dokunur --&gt; P[&quot;Yorum fotoğrafı sheet’i açılır&quot;]
+  P -- Kapat --&gt; E
+  F -- Puan filtresi seçer --&gt; H{&quot;Filtreye uyan yorum var mı?&quot;}
+  H -- Hayır --&gt; Z[&quot;Boş durum · filtre sonucu yok: Tüm yorumları göster&quot;]
+  Z --&gt; G
+  H -- Evet --&gt; Q[&quot;Filtreye uyan yorumlar listelenir&quot;]
+  Q --&gt; ZSON
+  F -- Tüm yorumları gör --&gt; G[&quot;Tüm yorumlar: en yeni sıralı, Daha fazla ile açılır, kaydırdıkça devam eder&quot;]
+  G --&gt; U{&quot;Alıcı ne yapar?&quot;}
+  U -- Sıralamayı değiştirir --&gt; T[&quot;Sırala sheet’i: En yeni, En eski, En yüksek puan, En düşük puan&quot;]
+  T --&gt; G
+  U -- Puan filtresi seçer --&gt; H
+  U -- Ürüne döner --&gt; ZSON
+</pre></div>
+</section>
+<section class="akis">
+<h2>Akış 3 · Satıcı: yoruma cevap verme ve bildirme</h2>
+<p>Ürününe yayımlanmış bir yorum geldiğinde satıcının cevap verip vermeyeceği ve yorumu bildirip bildirmeyeceği, yorumun alıcılara nasıl görüneceğini belirler. Satıcı ekranları tasarlanmadı (bkz. Açık soru 9).</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TD
+  A[&quot;Ürüne yayımlanmış yeni bir yorum gelir&quot;] --&gt; B[&quot;Satıcı yorumu satıcı panelinde görür&quot;]
+  B --&gt; C{&quot;Yoruma cevap vermek istiyor mu?&quot;}
+  C -- Evet --&gt; D[&quot;Satıcı cevabını yazar ve gönderir&quot;]
+  D --&gt; E[&quot;Cevap, yorumun içinde dükkan adı ve tarihle alıcılara görünür&quot;]
+  C -- Hayır --&gt; F{&quot;Yorum kuralları ihlal ediyor mu?&quot;}
+  E --&gt; F
+  F -- Evet --&gt; G[&quot;Satıcı yorumu Shopier’e bildirir&quot;]
+  G --&gt; H[&quot;Bildirim Shopier moderasyonuna düşer: Akış 4&quot;]
+  F -- Hayır --&gt; I[&quot;Yorum olduğu gibi yayında kalır: satıcı silemez, gizleyemez, düzenleyemez&quot;]
+  H --&gt; ZSON[&quot;Akış biter: karar Shopier’dedir&quot;]
+  I --&gt; ZSON
+</pre></div>
+</section>
+<section class="akis">
+<h2>Akış 4 · Shopier operasyon: moderasyon</h2>
+<p>Yeni yorum ya da satıcı bildirimi moderasyona düştüğünde yorumun yayımlanıp yayımlanmayacağını Shopier belirler. Moderasyon ekranları tasarlanmadı (bkz. Açık soru 18); sonuç adımları Açık soru 16 ve 17&#x27;ye bağlıdır.</p>
+<div class="diagram"><pre class="mermaid">
+flowchart TD
+  A[&quot;Alıcı yorum gönderir&quot;] --&gt; B[&quot;Yorum Shopier moderasyonuna girer&quot;]
+  B --&gt; C{&quot;Yorum kurallara uygun mu?&quot;}
+  C -- Hayır --&gt; D[&quot;Yorum yayımlanmaz&quot;]
+  D --&gt; DE[&quot;Akış biter: yorum yayında yok&quot;]
+  C -- Evet --&gt; E[&quot;Yorum Ad S. ve Doğrulanmış alıcı etiketiyle ürün sayfasında yayımlanır&quot;]
+  E --&gt; F{&quot;Satıcı yorumu bildirdi mi?&quot;}
+  F -- Hayır --&gt; FE[&quot;Akış biter: yorum yayında kalır&quot;]
+  F -- Evet --&gt; G[&quot;Bildirim moderasyona düşer, Shopier yorumu yeniden inceler&quot;]
+  G --&gt; H{&quot;Yorum kuralları ihlal ediyor mu?&quot;}
+  H -- Evet --&gt; I[&quot;Yorum yayından kaldırılır: bkz. Açık soru 17&quot;]
+  H -- Hayır --&gt; J[&quot;Yorum yayında kalır&quot;]
+  I --&gt; ZSON[&quot;Akış biter: karar verildi&quot;]
+  J --&gt; ZSON
+</pre></div>
+</section>
+
+<section class="akis">
+<h2>Kararlar</h2>
+<ul>
+<li>Yön: siparişe bağlı, doğrulanmış yorum; fotoğraf; sipariş sonrası davet; satıcı cevabı; Shopier moderasyonu.</li>
+<li>Yalnızca siparişi olan alıcı yorum yazar; ürün sayfasında herkese açık “yorum yaz” girişi yoktur.</li>
+<li>Yorum: 1–5 puan, metin, isteğe bağlı fotoğraf; video bu fazda yok. Yayımlanan yorumda “Doğrulanmış alıcı” etiketi görünür.</li>
+<li>Satıcı herkese açık cevap verebilir ve ihlali bildirebilir; yorumu silemez, gizleyemez, düzenleyemez.</li>
+<li>Yorumu olmayan üründe puan satırı gösterilmez, boş durum metni gösterilir.</li>
+<li>Yorum ürüne yapılır; satıcı ya da dükkan puanı yok.</li>
+</ul>
+<p class="meta">Açık sorular (moderasyon zamanı, davet kanalı ve süresi, satıcı bildirimi sonrası süreç, operasyon ekranları vb.) PRD dosyasındadır.</p>
+</section>
+<section class="akis">
+<h2>Revizyon geçmişi</h2>
+<table>
+<tr><th>Tarih</th><th>Tur</th><th>Değişiklik</th></tr>
+<tr><td>31.10.2026</td><td>2</td><td>İlk sürüm: alıcı (yazma), alıcı (görme), satıcı ve Shopier operasyon için 4 ürün akışı.</td></tr>
+</table>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({startOnLoad:true,theme:"base",flowchart:{curve:"basis",htmlLabels:true},themeVariables:{fontFamily:"Urbanist, -apple-system, Segoe UI, sans-serif",primaryColor:"#FFFFFF",primaryBorderColor:"#6700FF",primaryTextColor:"#0B0F34",lineColor:"#545670",secondaryColor:"#F7F7F7",tertiaryColor:"#F7F7F7"}});
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # PRD: Ürün yorumları — “Dükkan sayfalarındaki ürün detayından ürün yorumları yapılabilsin ve görüntülenebilsin”
 
-**Taslak v0.1** · **Tarih:** 31 Ekim 2026 · **Sahip:** ipek şimşek, PM (Product Lead: İmge Aksoy) · **Kaynak:** `arastirma.md` / `arastirma.html` (rakip ve mevzuat benchmark'ı; görüşme katılımcısı yok, K1–Kn kullanılmadı), `tasarim.md` / `tasarim.html` · **İlgili içgörü:** yok (kullanıcı görüşmesi analizi bağlanmadı)
+**Taslak v0.2** · **Tarih:** 31 Ekim 2026 · **Sahip:** ipek şimşek, PM (Product Lead: İmge Aksoy) · **Kaynak:** `arastirma.md` / `arastirma.html` (rakip ve mevzuat benchmark'ı; görüşme katılımcısı yok, K1–Kn kullanılmadı), `tasarim.md` / `tasarim.html` · **İlgili içgörü:** yok (kullanıcı görüşmesi analizi bağlanmadı)
 
 > Siparişi tamamlanmış alıcı, sipariş sonrası gelen davetle ürüne puan, metin ve fotoğrafla yorum bırakabilir; dükkan ziyaretçileri bu doğrulanmış yorumları ürün detay sayfasında görebilir ve satıcı yoruma herkese açık cevap verebilir.
 
@@ -64,6 +64,7 @@ Not: Ticimax ve T-Soft için herkese açık doküman bulunamadı; bu iki platfor
 | **Siparişi tamamlanmış alıcı** — davet almış, hesaplı ya da misafir | Deneyimini puan, metin ve fotoğrafla paylaşmak | Yorum yaz sayfası (davet bağlantısıyla), durum sheet'leri (bkz. tasarım: Yorum yaz · boş, dolu, Hata · gönderilemedi, Hata · form, Başarı, Hata · bağlantı geçersiz) |
 | **Ürün sayfasını gezen alıcı / ziyaretçi** | Satın almadan önce diğer alıcıların deneyimini görmek | Ürün detay (bkz. tasarım: Ürün detay · puan özeti, Yorumlar bölümü, Tüm yorumlar, Sırala sheet'i, Yorum fotoğrafı sheet'i, Boş durum, Yükleniyor, Hata · yorumlar yüklenemedi; desktop: Desktop · ürün detay) |
 | **Satıcı** — ürünü yorum alan dükkan sahibi | Yoruma herkese açık cevap vermek, kural ihlalini bildirmek | Satıcı paneli. Ekranlar tasarlanmadı, kaynak bekleniyor (bkz. Açık soru 9). Alıcının gördüğü cevap kutusu tasarımda var. |
+| **Shopier operasyon** — yorumları moderasyondan geçiren ekip | Gelen yorumu ve satıcı bildirimini incelemek, uygun yorumu yayımlamak | Moderasyon aracı. Ekranlar tasarlanmadı, kaynak bekleniyor (bkz. Açık soru 18). |
 
 ### Kullanıcı hikayeleri ve kabul kriterleri
 
@@ -151,48 +152,122 @@ Bir satıcı olarak, ürünüme gelen yoruma herkese açık cevap vermek istiyor
 
 Satıcı ekranları tasarlanmadı; cevap yazma ve bildirme arayüzü Açık soru 9'a bağlıdır.
 
+#### US-6 · Shopier operasyon, yorumu moderasyondan geçirir
+
+Bir Shopier operasyon çalışanı olarak, alıcı yorumlarını ve satıcı bildirimlerini incelemek istiyorum, böylece yalnızca kurallara uygun, doğrulanmış alıcı yorumları yayımlanır.
+
+- **GIVEN** bir alıcı yorum gönderdi
+- **WHEN** yorum moderasyona girer
+- **THEN** kurallara uygun yorum “Ad S.” ve “Doğrulanmış alıcı” etiketiyle ürün sayfasında yayımlanır
+- **AND** kurallara uygun olmayan yorum yayımlanmaz (alıcıya bilgi verilip verilmeyeceği Açık soru 16'ya bağlıdır)
+
+- **GIVEN** satıcı yayımlanmış bir yorumu kural ihlali olarak bildirdi
+- **WHEN** bildirim moderasyona düşer
+- **THEN** yorum Shopier tarafından incelenir; karar süreci Açık soru 17'ye bağlıdır
+
+Moderasyon yayından önce mi sonra mı yapılacağı Açık soru 3'e bağlıdır; akış tasarımdaki varsayımı (ön moderasyon) izler.
+
 ## 3. Akışlar
 
-### Çözüm 1 · Alıcının yorum yazması
+Etkilenen her kullanıcı tipi için uçtan uca bir ürün akışı vardır. Akışların çizilmiş hâli: `prd-akis.html`. Ekran adları onaylı tasarımdandır; satıcı ve Shopier operasyon ekranları tasarlanmadığı için o akışlarda adımlar genel adlarla yazıldı.
 
-Sipariş sonrası davet bağlantısı açıldığında bağlantının geçerliliği, puan ve gönderim sonucuna göre alıcının ne göreceğini belirler.
+### Akış 1 · Siparişi tamamlanmış alıcı: yorum yazma
+
+Sipariş sonrası davet bağlantısı açıldığında bağlantının geçerliliği, puan, form ve gönderim sonucu alıcının ne göreceğini ve akışın nerede biteceğini belirler.
 
 ```mermaid
 flowchart TD
-  A["Sipariş tamamlanır, davet gönderilir"] --> B["Alıcı davet bağlantısını açar"]
+  A["Sipariş tamamlanır, alıcıya sipariş sonrası davet gider"] --> B["Alıcı davet bağlantısını açar, giriş gerekmez"]
   B --> C{"Bağlantı geçerli mi?"}
-  C -- Hayır --> X["Bağlantı geçersiz bilgisi, Dükkana git"]
-  C -- Evet --> D["Yorum yaz sayfası açılır"]
+  C -- Hayır --> X["Hata · bağlantı geçersiz: yorum yazılamaz, Dükkana git"]
+  X --> XE["Akış biter: alıcı dükkana döner"]
+  C -- Evet --> D["Yorum yaz · boş: ürün, puan seçici, metin alanı, fotoğraf ekleme"]
   D --> E{"Puan seçildi mi?"}
   E -- Hayır --> F["Yorumu gönder kullanılamaz"]
   F -.-> D
-  E -- Evet --> G{"Metin ve fotoğraf geçerli mi?"}
-  G -- Hayır --> H["Alan hatası gösterilir, içerik korunur"]
-  H -.-> D
-  G -- Evet --> I{"Gönderim başarılı mı?"}
-  I -- Hayır --> J["Gönderilemedi: Tekrar dene veya Vazgeç"]
-  J -.-> D
-  I -- Evet --> K["Teşekkür sheet'i, yorum Shopier moderasyonuna girer"]
+  E -- Evet --> G["Yorum yaz · dolu: metin ve isteğe bağlı fotoğraf"]
+  G --> H{"Metin ve fotoğraf geçerli mi?"}
+  H -- Hayır --> I["Hata · form: alan hatası ve yardımcı metin, yazılanlar korunur"]
+  I -.-> G
+  H -- Evet --> J{"Gönderim başarılı mı?"}
+  J -- Hayır --> K["Hata · gönderilemedi: Tekrar dene veya Vazgeç, form içeriği korunur"]
+  K -. Tekrar dene .-> G
+  K -- Vazgeç --> V["Akış biter: alıcı yorum yazmadan ayrılır"]
+  J -- Evet --> L["Başarı: Teşekkürler, yorumunuz alındı"]
+  L --> M["Ürüne git: alıcı ürün detayına döner"]
+  L --> N["Yorum Shopier moderasyonuna girer, yayın zamanı moderasyon kararına bağlıdır"]
+  M --> ME["Akış biter: alıcı ürün detayında"]
 ```
 
-### Çözüm 2 · Yorumun görüntülenmesi
+### Akış 2 · Ürün sayfasını gezen alıcı: yorumları görme
 
-Ürün detay sayfası açıldığında yorum durumuna göre alıcının Yorumlar bölümünde neyi göreceğini belirler.
+Ürün detay açıldığında yorumların yüklenmesi, yorum olup olmaması ve seçilen filtre alıcının Yorumlar bölümünde ne göreceğini belirler.
 
 ```mermaid
 flowchart TD
-  A["Alıcı ürün detayı açar"] --> B["Ürün sayfası yüklenir, yorumlar ayrıca yüklenir"]
+  A["Alıcı ürün detay sayfasını açar"] --> B["Ürün sayfası yüklenir, Yorumlar bölümü ayrıca yüklenir: Yükleniyor"]
   B --> C{"Yorumlar yüklendi mi?"}
-  C -- Hayır --> X["Yorumlar yüklenemedi, Tekrar dene"]
+  C -- Hayır --> X["Hata · yorumlar yüklenemedi: Tekrar dene"]
   X -.-> B
   C -- Evet --> D{"Yayımlanmış yorum var mı?"}
-  D -- Hayır --> Y["Puan satırı gizli, boş durum metni"]
-  D -- Evet --> E["Ortalama, dağılım ve en fazla 3 yorum"]
-  E --> F{"Puan filtresi seçildi mi?"}
-  F -- Hayır --> G["Tüm yorumları gör: en yeni sıralı liste"]
-  F -- Evet --> H{"Filtreye uyan yorum var mı?"}
-  H -- Hayır --> Z["Filtre sonucu yok, Tüm yorumları göster"]
-  H -- Evet --> G
+  D -- Hayır --> Y["Boş durum · yorum yok: puan satırı gizli, kimin yorum yazabileceği bilgisi"]
+  Y --> ZSON["Akış biter: alıcı ürün sayfasında gezinmeye devam eder"]
+  D -- Evet --> E["Ürün detay · puan özeti ve Yorumlar bölümü: ortalama, dağılım, en fazla 3 yorum"]
+  E --> F{"Alıcı ne yapar?"}
+  F -- Gezinmeye devam eder --> ZSON
+  F -- Yorum fotoğrafına dokunur --> P["Yorum fotoğrafı sheet’i açılır"]
+  P -- Kapat --> E
+  F -- Puan filtresi seçer --> H{"Filtreye uyan yorum var mı?"}
+  H -- Hayır --> Z["Boş durum · filtre sonucu yok: Tüm yorumları göster"]
+  Z --> G
+  H -- Evet --> Q["Filtreye uyan yorumlar listelenir"]
+  Q --> ZSON
+  F -- Tüm yorumları gör --> G["Tüm yorumlar: en yeni sıralı, Daha fazla ile açılır, kaydırdıkça devam eder"]
+  G --> U{"Alıcı ne yapar?"}
+  U -- Sıralamayı değiştirir --> T["Sırala sheet’i: En yeni, En eski, En yüksek puan, En düşük puan"]
+  T --> G
+  U -- Puan filtresi seçer --> H
+  U -- Ürüne döner --> ZSON
+```
+
+### Akış 3 · Satıcı: yoruma cevap verme ve bildirme
+
+Ürününe yayımlanmış bir yorum geldiğinde satıcının cevap verip vermeyeceği ve yorumu bildirip bildirmeyeceği, yorumun alıcılara nasıl görüneceğini belirler. Satıcı ekranları tasarlanmadı (bkz. Açık soru 9).
+
+```mermaid
+flowchart TD
+  A["Ürüne yayımlanmış yeni bir yorum gelir"] --> B["Satıcı yorumu satıcı panelinde görür"]
+  B --> C{"Yoruma cevap vermek istiyor mu?"}
+  C -- Evet --> D["Satıcı cevabını yazar ve gönderir"]
+  D --> E["Cevap, yorumun içinde dükkan adı ve tarihle alıcılara görünür"]
+  C -- Hayır --> F{"Yorum kuralları ihlal ediyor mu?"}
+  E --> F
+  F -- Evet --> G["Satıcı yorumu Shopier’e bildirir"]
+  G --> H["Bildirim Shopier moderasyonuna düşer: Akış 4"]
+  F -- Hayır --> I["Yorum olduğu gibi yayında kalır: satıcı silemez, gizleyemez, düzenleyemez"]
+  H --> ZSON["Akış biter: karar Shopier’dedir"]
+  I --> ZSON
+```
+
+### Akış 4 · Shopier operasyon: moderasyon
+
+Yeni yorum ya da satıcı bildirimi moderasyona düştüğünde yorumun yayımlanıp yayımlanmayacağını Shopier belirler. Moderasyon ekranları tasarlanmadı (bkz. Açık soru 18); sonuç adımları Açık soru 16 ve 17'ye bağlıdır.
+
+```mermaid
+flowchart TD
+  A["Alıcı yorum gönderir"] --> B["Yorum Shopier moderasyonuna girer"]
+  B --> C{"Yorum kurallara uygun mu?"}
+  C -- Hayır --> D["Yorum yayımlanmaz"]
+  D --> DE["Akış biter: yorum yayında yok"]
+  C -- Evet --> E["Yorum Ad S. ve Doğrulanmış alıcı etiketiyle ürün sayfasında yayımlanır"]
+  E --> F{"Satıcı yorumu bildirdi mi?"}
+  F -- Hayır --> FE["Akış biter: yorum yayında kalır"]
+  F -- Evet --> G["Bildirim moderasyona düşer, Shopier yorumu yeniden inceler"]
+  G --> H{"Yorum kuralları ihlal ediyor mu?"}
+  H -- Evet --> I["Yorum yayından kaldırılır: bkz. Açık soru 17"]
+  H -- Hayır --> J["Yorum yayında kalır"]
+  I --> ZSON["Akış biter: karar verildi"]
+  J --> ZSON
 ```
 
 ## Açık sorular
@@ -216,13 +291,18 @@ Her soru, onaylı araştırma veya tasarımdaki açık sorudan ya da bu PRD'yi y
 | 13 | Ürün detaydaki yıldız rengi (`ink-900` mi `brand-500` mü) ve 7 yeni component önerisinin (yıldız ikonu, puan özeti, yorum kartı, satıcı cevabı kutusu, puan seçici, metin alanı, fotoğraf ekleme) onayı bekleniyor. | Tasarım / Product Lead |
 | 14 | Shopier'de bugün bir yorum ya da puan altyapısı var mı (veri modeli, mevcut yorumlar)? Varsa bu PRD'nin kapsamı değişir. | Mühendislik |
 | 15 | Ticimax ve T-Soft doğrulanamadı; demo hesabıyla incelenmeli mi? Kararı etkilemiyorsa sonraki turlarda atlanabilir. | Product |
+| 16 | Moderasyonda uygun bulunmayan yorumda alıcıya bildirim gidecek mi, gerekçe verilecek mi, alıcı yorumunu düzeltip yeniden gönderebilecek mi? Akış 4'te bu durum “yorum yayımlanmaz” ile bitiyor. Önerim: Alıcıya kısa bilgi gitsin, yeniden gönderme bu fazda olmasın; Hukuk ve Product teyit etsin. | Product / Hukuk |
+| 17 | Satıcı bildirimi sonrası süreç ne: kim inceler, ne kadar sürede karar verilir, karar satıcıya iletilir mi, ihlal bulunursa yorum kaldırılır mı? Satıcı cevabı da moderasyona tabi mi? Akış 3 ve 4 kaldırma sonucunu varsayıyor. Önerim: İhlalde yorum kaldırılsın, karar satıcıya iletilsin, satıcı cevapları da moderasyona girsin; mevzuat açısından Hukuk teyit etsin. | Product / Hukuk / Operasyon |
+| 18 | Shopier operasyon için moderasyon aracı (kuyruk, fotoğraf ve metin inceleme, bildirim listesi) ne zaman, kim tarafından tasarlanacak? Tasarım bu ekranları kapsam dışı bıraktı; US-6 ve Akış 4 yalnızca davranış düzeyinde. | Product / Tasarım / Operasyon |
 
 ---
 
-Kaynaklar: `ozellikler/urun-yorumlari/durum.md`, `arastirma.md`, `arastirma.html`, `tasarim.md`, `tasarim.html`, `referanslar/prd-skill.md`. Atlassian bağlantısı bu turda kullanılamadı (yetkilendirme gerekli), mevcut Jira/Confluence kayıtları taranmadı. Katılımcı görüşmesi olmadığı için K1–Kn kullanılmadı.
+Kaynaklar: `ozellikler/urun-yorumlari/durum.md`, `arastirma.md`, `arastirma.html`, `tasarim.md`, `tasarim.html`, `referanslar/prd-skill.md`. Atlassian bağlantısı yetkilendirme gerektirdiği için kullanılamadı; mevcut Jira/Confluence kayıtları taranmadı. Katılımcı görüşmesi olmadığı için K1–Kn kullanılmadı.
 
 ## Revizyon geçmişi
 
 | Tarih | Tur | Değişiklik |
 |---|---|---|
 | 31.10.2026 | 1 | İlk sürüm. |
+| 31.10.2026 | 2 | PM revizesi 1 (ajan güncellendi): ajan tanımındaki güncel kurallara göre yeniden çalıştırıldı; Akışlar bölümü kullanıcı tipi başına ürün akışına çevrildi, `prd-akis.html` eklendi. |
+| 31.10.2026 | 2 | PM revizesi 2 (ürün akışı her kullanıcı tipi için): alıcı (yazma), alıcı (görme), satıcı ve Shopier operasyon için 4 uçtan uca akış; US-6 ve hedef kitle satırı eklendi; Açık soru 16–18 eklendi; v0.2. |
