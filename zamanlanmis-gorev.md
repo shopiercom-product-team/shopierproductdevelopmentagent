@@ -1,12 +1,12 @@
 # Zamanlanmış görev
 
-Akışın Slack'ten tetiklenmesi için bu görev her 15 dakikada bir çalışır. Claude masaüstü uygulamasında **Scheduled** bölümünden yeni görev olarak ekle.
+Akışın Slack'ten tetiklenmesi için bu görev her 5 dakikada bir çalışır. Claude masaüstü uygulamasında **Scheduled** bölümünden yeni görev olarak ekle.
 
 | Alan | Değer |
 |---|---|
 | Ad | Shopier ürün akışı turu |
 | Klasör | `/Users/imgeaksoy/Desktop/shopier-urun-akisi` |
-| Zaman | Her gün, her saat, 15 dakikada bir (`*/15 * * * *`) |
+| Zaman | Her gün, her saat, 5 dakikada bir (`*/5 * * * *`) |
 
 ## Prompt
 

@@ -1,6 +1,6 @@
 ---
 name: akis-turu
-description: Shopier ürün akışının bir turunu çalıştırır. Slack'te yeni "Başlat" komutlarını ve bekleyen PM / Product Lead cevaplarını okur, gereken ajanı çağırır, çıktıyı yayınlar ve onaya sunar, durum defterini günceller. Zamanlanmış görev her 15 dakikada bir çağırır; elle de çağrılabilir.
+description: Shopier ürün akışının bir turunu çalıştırır. Slack'te yeni "Başlat" komutlarını ve bekleyen PM / Product Lead cevaplarını okur, gereken ajanı çağırır, çıktıyı yayınlar ve onaya sunar, durum defterini günceller. Zamanlanmış görev her 5 dakikada bir çağırır; elle de çağrılabilir.
 ---
 
 # Akış turu (Koordinatör)
