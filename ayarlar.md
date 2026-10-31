@@ -32,5 +32,5 @@ PM satırı doldurulmadan akış Araştırma aşamasının onay kapısında bekl
 
 ## Çalışma
 
-- Akış turu: `akis-turu` skill'i, zamanlanmış görevle her 15 dakikada bir (hafta içi 09:00–19:00).
+- Akış turu: `akis-turu` skill'i, zamanlanmış görevle her 15 dakikada bir (hafta içi 09:00–19:00). Kurulum: `zamanlanmis-gorev.md`.
 - Bir aşamada en fazla 5 revize turu; 6.'da Koordinatör durumu Product Lead'e bildirir ve bekler.
