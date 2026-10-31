@@ -11,8 +11,8 @@ Bu dosyanın sahibi Koordinatör'dür.
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
 | Aşama | 3 · PRD |
-| Bekleyen | PM |
-| Revize sayısı | 0 |
+| Bekleyen | Ajan |
+| Revize sayısı | 2 |
 | Son sunum ts | 1793434820.915699 |
 | Durum | Devam ediyor |
 | Not | - |
@@ -46,3 +46,5 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 
 | Tarih | Aşama | Kimden | Yorum |
 |---|---|---|---|
+| 2026-10-31 | 3 · PRD | ipek şimşek · U0C9JL5JYAY | Revize: PRD ajanı güncellendi yeniden çalıştır |
+| 2026-10-31 | 3 · PRD | ipek şimşek · U0C9JL5JYAY | Revize: Ürün akışını her kullanıcı tipi için çıkar ve görselleştir |
