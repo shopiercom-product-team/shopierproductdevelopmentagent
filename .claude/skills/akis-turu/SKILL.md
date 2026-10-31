@@ -31,7 +31,7 @@ Sen Koordinatör'sün. Önce `CLAUDE.md` ve `ayarlar.md`'yi oku. Onay vermezsin,
 İlgili ajanı Agent aracıyla çağır (`subagent_type`: arastirma · tasarim · prd · prototip · jira). Prompt'a şunları yaz: özellik klasörünün yolu, aşama, revize turuysa son revize yorumunu **aynen** ve kimden geldiğini. Ajan bitince:
 
 - **HTML çıktısı olan aşamalar (araştırma, tasarım, prototip):** `artifact-design` skill'ini yükle, ajanın HTML'ini oku, Artifact aracıyla yayınla. İlk turda yeni artifact; revize turlarında aynı dosya yolundan aynı URL'ye güncelle. URL'yi `durum.md`'ye yaz.
-- **PRD:** Markdown'ı Slack thread'ine dosya olarak yükle (`slack_get_file_upload_url` → yükle → `slack_complete_file_upload`). Yükleme başarısız olursa PRD'yi HTML'e çevirip artifact olarak yayınla. Ayrıca `prd-akis.html`'i (ürün akışı görseli) artifact olarak yayınla; sunum mesajında PRD ile birlikte "Ürün akışı: <link>" satırı olsun. İki link de `durum.md`'ye yazılır.
+- **PRD:** Markdown'ı Slack thread'ine dosya olarak yükle (`slack_get_file_upload_url` → yükle → `slack_complete_file_upload`). Yükleme başarısız olursa PRD'yi HTML'e çevirip artifact olarak yayınla. User flow artifact'ini PRD ajanı kendisi yayınlar; linki ajanın raporundan al. Rapor link yerine yayın hatası söylüyorsa `prd-akis.html`'i sen yayınla. Sunum mesajında PRD ile birlikte "User flow'lar: <link>" satırı olsun. İki link de `durum.md`'ye yazılır.
 - **CTO değerlendirmesi:** Ajan yok; doğrudan PM onayına geç.
 - **Jira:** Ajanın raporundaki linkleri thread'e yaz, `Durum: Tamamlandı` yap, bitir.
 

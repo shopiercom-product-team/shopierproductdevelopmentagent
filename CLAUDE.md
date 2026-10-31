@@ -11,7 +11,7 @@ Shopier'de bir özelliğin fikirden Jira task'ına kadar ilerlediği ajan akış
 | **Koordinatör** | Ana Claude oturumu | Akışı yürütür: ajanları çağırır, çıktıları yayınlar, Slack'te PM'e ve Product Lead'e sunar, cevapları okur, durumu deftere yazar. **Kendisi onay vermez.** |
 | **Araştırma ajanı** | `.claude/agents/arastirma.md` | Benchmark ve pratik araştırması. |
 | **Tasarım ajanı** | `.claude/agents/tasarim.md` | DESIGN.md'ye göre ekran tasarımı. |
-| **PRD ajanı** | `.claude/agents/prd.md` | Onaylı araştırma ve tasarımdan PRD ve görselleştirilmiş ürün akışı. |
+| **PRD ajanı** | `.claude/agents/prd.md` | Onaylı araştırma ve tasarımdan PRD; user flow'ları artifact olarak kendisi yayınlar. |
 | **Prototip ajanı** | `.claude/agents/prototip.md` | Onaylı tasarım ve PRD'den tıklanabilir prototip. |
 | **CTO değerlendirmesi** | Şimdilik ajan yok | Manuel aşama: PM ve Product Lead Slack'te onaylayıp geçirir. |
 | **Jira ajanı** | `.claude/agents/jira.md` | Bütün onaylardan sonra Shopier Test Board'da (STB) task açar. |
@@ -61,7 +61,7 @@ Ajan çıktı üretir
 | 0 | Başlatma | Herhangi biri | Kanala yazılan özellik mesajı + thread'de "Başlat" | `durum.md` (PM = mesajı yazan) |
 | 1 | Araştırma | Araştırma ajanı | Özellik tanımı | Benchmark artifact'i |
 | 2 | Tasarım | Tasarım ajanı | Onaylı araştırma + DESIGN.md | Tasarım artifact'i |
-| 3 | PRD | PRD ajanı | Onaylı araştırma + tasarım | PRD dosyası + ürün akışı artifact'i |
+| 3 | PRD | PRD ajanı | Onaylı araştırma + tasarım | PRD dosyası + user flow artifact'i (ajan yayınlar) |
 | 4 | Prototip | Prototip ajanı | Onaylı tasarım + PRD | Prototip artifact'i |
 | 5 | CTO değerlendirmesi | Manuel (şimdilik boş) | Onaylı PRD + prototip | Yalnızca onay |
 | 6 | Jira | Jira ajanı | Bütün onaylı çıktılar | STB'de Epic + Story'ler |
