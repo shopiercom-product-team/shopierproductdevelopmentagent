@@ -10,10 +10,10 @@ Bu dosyanın sahibi Koordinatör'dür.
 | PM | ipek şimşek · U0C9JL5JYAY (özellik mesajını yazan) |
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
-| Aşama | 1 · Araştırma |
-| Bekleyen | Product Lead |
+| Aşama | 2 · Tasarım |
+| Bekleyen | PM |
 | Revize sayısı | 0 |
-| Son sunum ts | 1793432925.907789 |
+| Son sunum ts | 1793433646.662009 |
 | Durum | Devam ediyor |
 | Not | - |
 
@@ -26,7 +26,7 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 | Aşama | Dosya | Link |
 |---|---|---|
 | 1 · Araştırma | arastirma.html | https://claude.ai/artifact/PexgEvujMXxusT9TfWuoAi |
-| 2 · Tasarım | tasarim.html | - |
+| 2 · Tasarım | tasarim.html | https://claude.ai/artifact/BF9h4khLjcXBrSiYgHeGJ6 |
 | 3 · PRD | prd-urun-yorumlari.md | - |
 | 4 · Prototip | prototip.html | - |
 | 5 · CTO değerlendirmesi | (manuel) | - |
@@ -36,7 +36,7 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 
 | Aşama | PM onayı | Product Lead onayı |
 |---|---|---|
-| 1 · Araştırma | Onay · ipek şimşek · 2026-10-31 10:41 | - |
+| 1 · Araştırma | Onay · ipek şimşek · 2026-10-31 10:41 | Onay · İmge Aksoy · 2026-10-31 10:49 |
 | 2 · Tasarım | - | - |
 | 3 · PRD | - | - |
 | 4 · Prototip | - | - |

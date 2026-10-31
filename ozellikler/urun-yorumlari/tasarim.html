@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ürün Yorumları Tasarımı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..700;1,300&display=swap">
+<style>
+/* ---------- DESIGN.md Ek A token'ları (storefront, yalnızca açık tema) ---------- */
+:root{
+  --brand-500:#6700FF;
+  --sale-500:#EE3124; --sale-50:rgba(238,49,36,.10);
+  --ink-900:#0B0F34; --ink-800:#292D33; --ink-700:#2F3352; --ink-600:#414561;
+  --ink-500:#545670; --ink-400:#787A8E; --ink-300:#9C9EAC; --ink-250:#9FA0A5;
+  --line-300:#D0D0D7; --line-250:#D3D3D9; --line-200:#E2E2E5; --line-150:#E5E5E8;
+  --surface-200:#F1F1F1; --surface-150:#EEEEEE; --surface-100:#F7F7F7; --surface-0:#FFFFFF;
+  --neutral-tint:rgba(159,160,165,.09);
+  --overlay:rgba(11,15,52,.50); --sheet-handle:#D9D9D9;
+  --font-sans:"Urbanist",-apple-system,"Segoe UI",sans-serif;
+  --r-5:5px; --r-6:6px; --r-8:8px; --r-10:10px; --r-11:11px; --r-16:16px; --r-18:18px; --r-20:20px; --r-pill:27.5px;
+
+  /* Sunum (doküman çerçevesi) renkleri: ekranların dışı */
+  --doc-bg:#F7F7F7; --doc-fg:#0B0F34; --doc-muted:#545670; --doc-line:#E2E2E5; --doc-card:#FFFFFF;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --doc-bg:#0B0F34; --doc-fg:#F7F7F7; --doc-muted:#9C9EAC; --doc-line:#2F3352; --doc-card:#2F3352; }
+}
+:root[data-theme="dark"]{ --doc-bg:#0B0F34; --doc-fg:#F7F7F7; --doc-muted:#9C9EAC; --doc-line:#2F3352; --doc-card:#2F3352; }
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--doc-bg);color:var(--doc-fg);font-family:var(--font-sans);font-weight:500;-webkit-font-smoothing:antialiased}
+.doc{max-width:1500px;margin:0 auto;padding:30px 16px 64px}
+.doc-h h1{font:700 32px/40px var(--font-sans)}
+.doc-h p{font:500 16px/24px var(--font-sans);color:var(--doc-muted);max-width:760px;margin-top:8px}
+.doc-meta{display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:15px;font:500 14px/20px var(--font-sans);color:var(--doc-muted)}
+.doc-meta label{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+.flow{margin-top:40px}
+.flow h2{font:600 24px/30px var(--font-sans)}
+.flow > p{font:500 14px/20px var(--font-sans);color:var(--doc-muted);margin-top:5px;max-width:760px}
+.row{display:flex;gap:30px;overflow-x:auto;padding:20px 0 15px;scroll-snap-type:x proximity}
+.screen{flex:0 0 393px;scroll-snap-align:start}
+.screen figcaption{margin-top:12px}
+.screen figcaption b{display:block;font:600 16px/20px var(--font-sans)}
+.screen figcaption span{display:block;font:500 14px/20px var(--font-sans);color:var(--doc-muted);margin-top:5px}
+@media (max-width:440px){ .screen{flex-basis:calc(100vw - 32px)} .phone{transform-origin:0 0} }
+
+/* ---------- Telefon çerçevesi ---------- */
+.phone{width:393px;height:852px;position:relative;overflow:hidden;background:var(--surface-0);border:1px solid var(--line-200);border-radius:20px;color:var(--ink-900)}
+.scroll{position:absolute;inset:0;overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.has-bar .scroll{bottom:70px}
+.c{padding:0 22px}
+
+/* İkon */
+.ic{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ic16{width:16px;height:16px}
+.ic48{width:48px;height:48px;stroke-width:1}
+
+/* Header (4.3) */
+.hdr{height:55px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:var(--surface-0)}
+.logo{font:700 22px/1 var(--font-sans);color:var(--brand-500);letter-spacing:0}
+.hdr-ic{display:flex;gap:15px;color:var(--ink-900)}
+.bag{position:relative}
+.bag em{position:absolute;left:0;right:0;top:9px;text-align:center;font:700 13px/1 var(--font-sans);font-style:normal;color:var(--ink-900)}
+
+/* Görsel yer tutucu */
+.img{background:var(--surface-100);border:1px solid var(--line-200);display:flex;align-items:center;justify-content:center;color:var(--ink-300);font:500 12px/14px var(--font-sans)}
+.img.pdp{width:349px;height:349px;border-radius:var(--r-16);position:relative}
+.dots{position:absolute;bottom:15px;left:0;right:0;display:flex;gap:8px;justify-content:center}
+.dots i{width:8px;height:8px;border-radius:9999px;background:rgba(0,0,0,.3)}
+.dots i.on{background:#000}
+
+/* Tipografi yardımcıları */
+.name18{font:700 18px/24px var(--font-sans);color:var(--ink-900)}
+.price18{font:500 18px/22px var(--font-sans);color:var(--ink-700)}
+.price18 small{font-size:16px}
+.t14{font:500 14px/20px var(--font-sans)}
+.t12{font:500 12px/16px var(--font-sans)}
+.muted{color:var(--ink-500)}
+.faint{color:var(--ink-400)}
+.ph{color:var(--ink-300)}
+.sec-title{font:600 16px/22px var(--font-sans);color:var(--ink-900)}
+.page-title{font:700 32px/40px var(--font-sans);color:var(--ink-900)}
+
+/* Butonlar (6.1) */
+.btn{display:flex;align-items:center;justify-content:center;width:349px;height:50px;border-radius:var(--r-pill);font:600 18px/22px var(--font-sans);border:1px solid transparent;background:none}
+.btn.primary{background:var(--brand-500);color:#fff}
+.btn.disabled{background:var(--ink-300);color:#fff}
+.btn.outline{border-color:var(--brand-500);color:var(--brand-500);background:#fff}
+.btn-stack{display:flex;flex-direction:column;gap:12px}
+.text-link{font:600 14px/17px var(--font-sans);color:var(--brand-500)}
+.back{display:flex;align-items:center;gap:8px;font:500 14px/17px var(--font-sans);color:var(--ink-900)}
+
+/* Sticky bar (4.3) */
+.bar{position:absolute;left:0;right:0;bottom:0;height:70px;background:#fff;border-top:1px solid var(--line-200);display:flex;align-items:center;justify-content:center}
+
+/* Tab (6.5) */
+.tabs{display:flex;border-bottom:1px solid var(--line-200)}
+.tabs span{flex:1;text-align:center;padding:12px 0;font:500 16px/20px var(--font-sans);color:var(--ink-300)}
+.tabs span.on{font-weight:600;color:var(--ink-900);box-shadow:inset 0 -2px 0 var(--ink-900)}
+
+/* Dükkan kartı (7.9) */
+.store{width:349px;height:88px;background:var(--surface-100);border-radius:var(--r-16);padding:0 15px;display:flex;align-items:center;gap:12px}
+.store .lg{width:50px;height:50px;border-radius:9999px;border:1px solid var(--ink-900);background:#fff;display:flex;align-items:center;justify-content:center;font:700 14px/1 var(--font-sans)}
+.store b{display:block;font:600 16px/22px var(--font-sans)}
+.follow{margin-left:auto;width:80px;height:30px;border:1px solid var(--ink-900);border-radius:var(--r-8);font:500 14px/1 var(--font-sans);display:flex;align-items:center;justify-content:center}
+
+/* Chip (6.3) */
+.chips{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:0 22px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;height:36px;padding:0 15px;border-radius:18.24px;background:var(--surface-100);font:500 14px/18px var(--font-sans);color:var(--ink-700);white-space:nowrap}
+.chip.on{background:var(--ink-700);color:#fff}
+
+/* Badge (6.4 liste bilgi) */
+.badge{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;background:var(--surface-100);border:1px solid #F4F4F4;border-radius:var(--r-5);font:500 12px/14px var(--font-sans);color:var(--ink-700);white-space:nowrap}
+
+/* Progress (6.9) — puan dağılımında */
+.dist{display:flex;flex-direction:column;gap:8px}
+.dist-row{display:grid;grid-template-columns:62px 1fr 30px;align-items:center;gap:10px}
+.dist-row .lb{display:flex;align-items:center;gap:5px;font:500 14px/17px var(--font-sans);color:var(--ink-900)}
+.track{height:4px;border-radius:2px;background:var(--line-300);overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink-900);border-radius:2px}
+.dist-row .n{font:500 14px/17px var(--font-sans);color:var(--ink-400);text-align:right}
+
+/* Yıldız */
+.stars{display:inline-flex;gap:2px;vertical-align:middle}
+.stars svg{width:16px;height:16px;fill:var(--line-300)}
+.stars svg.f{fill:var(--ink-900)}
+.stars.s24 svg{width:24px;height:24px}
+
+/* Puan özeti */
+.sum{display:flex;gap:22px;align-items:center}
+.sum-avg{flex:none;text-align:left}
+.sum-avg .big{font:700 32px/40px var(--font-sans);color:var(--ink-900)}
+.sum-avg .t12{margin-top:5px}
+.sum .dist{flex:1}
+
+/* Yorum kartı — Öneri */
+.rv{padding:20px 0;border-bottom:1px solid var(--line-200)}
+.rv:last-child{border-bottom:0}
+.rv-top{display:flex;justify-content:space-between;align-items:center}
+.rv-who{display:flex;align-items:center;gap:8px;margin-top:10px;font:600 14px/17px var(--font-sans);color:var(--ink-900)}
+.rv-var{margin-top:5px}
+.rv-txt{margin-top:10px;font:500 14px/20px var(--font-sans);color:var(--ink-500)}
+.rv-txt.clamp{max-height:100px;overflow:hidden;position:relative}
+.more{font:500 14px/20px var(--font-sans);color:var(--ink-500);margin-top:5px;text-decoration:underline}
+.rv-ph{display:flex;gap:10px;margin-top:12px}
+.rv-ph i{width:60px;height:60px;border-radius:var(--r-5);background:var(--surface-200);border:1px solid var(--line-200);display:block}
+.reply{margin-top:15px;background:var(--surface-100);border-radius:var(--r-11);padding:15px}
+.reply-h{display:flex;justify-content:space-between;align-items:center;font:600 14px/17px var(--font-sans);color:var(--ink-900)}
+.reply p{margin-top:8px;font:500 14px/20px var(--font-sans);color:var(--ink-500)}
+
+/* Notification bar (6.6) */
+.notif{width:349px;background:var(--surface-100);border-radius:var(--r-16);padding:15px 20px;display:flex;align-items:center;gap:12px;font:500 16px/20px var(--font-sans);color:var(--ink-900)}
+.notif .nbtn{margin-left:auto;flex:none;height:34px;padding:0 12px;background:#fff;border-radius:var(--r-10);display:flex;align-items:center;font:500 14px/1 var(--font-sans);color:var(--ink-900)}
+
+/* Loader (6.10) */
+.loader{width:53px;height:53px;border-radius:9999px;position:relative;animation:spin 1s linear infinite;margin:0 auto}
+.loader i{position:absolute;width:9px;height:9px;border-radius:9999px;background:var(--brand-500)}
+.loader i:first-child{top:4px;left:22px}
+.loader i:last-child{bottom:4px;left:22px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.loader{animation:none}}
+
+/* Bottom sheet (7.5) */
+.ov{position:absolute;inset:0;background:var(--overlay)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;padding:9px 22px 34px;max-height:639px}
+.handle{width:50px;height:5px;border-radius:20px;background:var(--sheet-handle);margin:0 auto}
+.sheet-title{text-align:center;font:700 20px/25px var(--font-sans);color:var(--ink-900)}
+.sheet-txt{text-align:center;font:500 16px/20px var(--font-sans);color:var(--ink-500)}
+.sheet .btns{display:flex;flex-direction:column;gap:5px}
+.radio{width:349px;height:50px;border:1px solid var(--line-300);border-radius:var(--r-pill);display:flex;align-items:center;justify-content:space-between;padding:0 15px 0 19px;font:500 16px/20px var(--font-sans);color:var(--ink-900)}
+.radio .circ{width:24px;height:24px;border:1px solid var(--line-300);border-radius:9999px}
+.radio .tick{color:var(--brand-500)}
+.text-clear{font:600 16px/20px var(--font-sans);color:var(--ink-300);text-align:center}
+.text-clear.on{color:var(--brand-500)}
+
+/* Form (yorum yazma) */
+.f-label{font:500 16px/20px var(--font-sans);color:var(--ink-900)}
+.f-label small{font-size:16px;color:var(--ink-300)}
+.prod-row{display:flex;gap:12px;align-items:center;padding:15px;border:1px solid var(--line-300);border-radius:var(--r-11)}
+.prod-row .img{width:80px;height:80px;border-radius:var(--r-5);flex:none}
+.prod-row b{display:block;font:500 14px/17px var(--font-sans);color:var(--ink-700)}
+.picker{display:flex;gap:12px;margin-top:12px}
+.picker svg{width:40px;height:40px;fill:none;stroke:var(--ink-300);stroke-width:1.5;stroke-linejoin:round}
+.picker svg.f{fill:var(--ink-900);stroke:var(--ink-900)}
+.ta{margin-top:12px;width:349px;height:150px;border:1px solid var(--line-300);border-radius:var(--r-11);padding:15px 19px;position:relative;font:500 16px/24px var(--font-sans);color:var(--ink-900)}
+.ta.ph-on{color:var(--ink-300)}
+.ta .cnt{position:absolute;right:15px;bottom:12px;font:500 12px/14px var(--font-sans);color:var(--ink-400)}
+.ta.err{border-color:var(--sale-500)}
+.err-txt{margin-top:8px;font:600 14px/17px var(--font-sans);color:var(--sale-500)}
+.up{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.tile{width:80px;height:80px;border-radius:var(--r-5);position:relative;flex:none}
+.tile.photo{background:var(--surface-200);border:1px solid var(--line-200)}
+.tile.add{background:var(--surface-100);border:1px solid var(--line-300);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--ink-900)}
+.tile.add span{font:500 12px/14px var(--font-sans);color:var(--ink-500)}
+.tile.loading{background:var(--surface-200);display:flex;align-items:center;justify-content:center}
+.tile.loading .loader{transform:scale(.6)}
+.tile.bad{border:1px solid var(--sale-500);background:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font:500 12px/14px var(--font-sans);color:var(--sale-500);padding:0 5px}
+.tile .x{position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:#fff;border-radius:9999px;color:var(--ink-900)}
+.legal{font:400 12px/16px var(--font-sans);color:var(--ink-500)}
+.legal b{font-weight:700;color:var(--ink-900)}
+
+/* Öneri etiketi (sunum katmanı, tasarımın parçası değil) */
+.ann{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px dashed var(--brand-500);border-radius:var(--r-5);background:#fff;font:600 11px/1 var(--font-sans);color:var(--brand-500);white-space:nowrap}
+.ann-wrap{position:relative}
+.ann-wrap > .ann{position:absolute;top:-10px;right:0;z-index:2}
+body:has(#annT:not(:checked)) .ann{display:none}
+
+/* Desktop */
+.dk-wrap{width:720px;height:560px;overflow:hidden;border:1px solid var(--line-200);border-radius:20px;background:#fff;flex:none}
+.dk{width:1440px;height:1120px;transform:scale(.5);transform-origin:0 0;color:var(--ink-900);background:#fff}
+.dk .hdr{padding:0 64px;height:55px}
+.dk-search{width:349px;height:36px;background:var(--surface-100);border-radius:var(--r-16);display:flex;align-items:center;gap:8px;padding:0 15px;color:var(--ink-500);font:500 14px/1 var(--font-sans)}
+.dk-main{padding:20px 64px 0;display:flex;gap:30px}
+.dk-thumbs{display:flex;flex-direction:column;gap:10px}
+.dk-thumbs i{width:60px;height:60px;border-radius:var(--r-5);background:var(--surface-100);border:1px solid var(--line-200);display:block}
+.dk-thumbs i.on{border-color:var(--ink-700)}
+.dk-col{width:349px}
+.dk-rv{padding:50px 64px 0;display:flex;gap:64px}
+.dk-rv-left{width:349px;flex:none}
+.dk-rv-right{flex:1;max-width:760px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2zM13 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2" fill="#fff"/><circle cx="17" cy="18" r="2" fill="#fff"/></symbol>
+  <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M4.5 8h15l-1 13h-13zM9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M5 12v8h14v-8"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2l5.6 5.6M14.8 9.2l-5.6 5.6"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.8 2.8L16 9.8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.4"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M4 7h16M7 12h10M10 17h4"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.43 1.07 6.27L12 17.2l-5.62 2.96 1.07-6.27L2.9 9.4l6.3-.9z"/></symbol>
+</svg>
+
+<main class="doc">
+  <header class="doc-h">
+    <h1>Ürün yorumları · Tasarım (tur 1)</h1>
+    <p>Onaylı araştırmanın B seçeneği: siparişe bağlı, doğrulanmış yorum (yıldız, metin, fotoğraf), sipariş sonrası davetle yorum yazma, satıcının herkese açık cevabı. Yalnızca alıcı storefront'u; satıcı paneli kapsam dışı. Kaynak: DESIGN.md (Storev3 v1.2).</p>
+    <div class="doc-meta">
+      <span>Mobil 393 × 852 · içerik 349 · kenar 22</span>
+      <span>Font: Urbanist</span>
+      <label><input type="checkbox" id="annT" checked> "Öneri · onay bekliyor" etiketlerini göster</label>
+    </div>
+  </header>
+
+  <!-- =========================== AKIŞ 1: GÖRÜNTÜLEME =========================== -->
+  <section class="flow">
+    <h2>1 · Yorumları görüntüleme</h2>
+    <p>Ürün detay sayfasında puan özeti ve yorumlar bölümü, tüm yorumlar sayfası, sıralama ve yorum fotoğrafı.</p>
+    <div class="row">
+
+      <!-- 1.1 -->
+      <figure class="screen">
+        <div class="phone"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><span class="bag"><svg class="ic"><use href="#i-bag"/></svg><em>1</em></span></span></div>
+          <div class="c">
+            <div class="img pdp">Ürün görseli<div class="dots"><i class="on"></i><i></i><i></i></div></div>
+            <div style="display:flex;justify-content:space-between;gap:12px;margin-top:20px">
+              <div class="name18">Keten gömlek elbise</div>
+              <span style="display:flex;gap:15px"><svg class="ic"><use href="#i-heart"/></svg><svg class="ic"><use href="#i-share"/></svg></span>
+            </div>
+            <div class="ann-wrap" style="display:flex;align-items:center;gap:8px;margin-top:8px">
+              <span class="stars" data-r="5" data-v="4.6"></span>
+              <span style="font:600 14px/17px var(--font-sans)">4,6</span>
+              <span class="text-link" style="text-decoration:underline">128 yorum</span>
+              <span class="ann" style="position:static;margin-left:auto">Öneri · onay bekliyor</span>
+            </div>
+            <div class="price18" style="margin-top:12px">1.450 <small>TL</small></div>
+            <div style="margin-top:20px" class="f-label">Beden</div>
+            <div style="margin-top:12px;display:flex;gap:10px"><span class="chip">S</span><span class="chip on">M</span><span class="chip">L</span></div>
+            <div class="btn-stack" style="margin-top:25px"><div class="btn primary">Sepete ekle</div><div class="btn outline">Hemen al</div></div>
+          </div>
+        </div></div>
+        <figcaption><b>1.1 · Ürün detay · puan özeti</b><span>Ürün adının altında ortalama puan ve yorum sayısı; "128 yorum"a dokunmak sayfayı Yorumlar bölümüne kaydırır.</span></figcaption>
+      </figure>
+
+      <!-- 1.2 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><span class="bag"><svg class="ic"><use href="#i-bag"/></svg><em>1</em></span></span></div>
+          <div class="c">
+            <div class="tabs"><span class="on">Ürün açıklaması</span><span>Teslimat bilgisi</span></div>
+            <p class="t14 muted" style="margin-top:15px">%100 keten kumaş, rahat kesim. Boy uzunluğu M bedende 112 cm.</p>
+            <div class="sec-title" style="margin-top:30px">Yorumlar (128)</div>
+            <div class="sum ann-wrap" style="margin-top:15px">
+              <span class="ann">Öneri · onay bekliyor</span>
+              <div class="sum-avg"><div class="big">4,6</div><span class="stars" data-r="5" data-v="4.6"></span><div class="t12 faint">128 yorum</div></div>
+              <div class="dist">
+                <div class="dist-row"><span class="lb">5 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:73%"></i></span><span class="n">93</span></div>
+                <div class="dist-row"><span class="lb">4 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:17%"></i></span><span class="n">22</span></div>
+                <div class="dist-row"><span class="lb">3 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:6%"></i></span><span class="n">8</span></div>
+                <div class="dist-row"><span class="lb">2 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:4%"></i></span><span class="n">5</span></div>
+                <div class="dist-row"><span class="lb">1 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:0"></i></span><span class="n">0</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="chips" style="margin-top:20px"><span class="chip on">Tümü</span><span class="chip">Fotoğraflı (24)</span><span class="chip">5 yıldız (93)</span><span class="chip">4 yıldız (22)</span><span class="chip">3 yıldız (8)</span></div>
+          <div class="c">
+            <div class="rv ann-wrap"><span class="ann" style="top:10px">Öneri · onay bekliyor</span>
+              <div class="rv-top"><span class="stars" data-r="5"></span><span class="t12 faint">28 Ekim 2026</span></div>
+              <div class="rv-who">Ayşe K. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span></div>
+              <div class="rv-var t12 faint">Renk: Bej · Beden: M</div>
+              <p class="rv-txt">Kumaşı çok kaliteli, fotoğraftakinden de güzel duruyor. Boyum 1,68 ve M aldım, tam oturdu. Kargo iki günde geldi.</p>
+              <div class="rv-ph"><i></i><i></i></div>
+              <div class="reply"><div class="reply-h">Muse Studio'nun cevabı<span class="t12 faint">29 Ekim 2026</span></div><p>Ayşe Hanım, güzel yorumunuz için teşekkür ederiz. Keyifle giymenizi dileriz.</p></div>
+            </div>
+            <div class="rv">
+              <div class="rv-top"><span class="stars" data-r="2"></span><span class="t12 faint">15 Ekim 2026</span></div>
+              <div class="rv-who">Elif T. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span></div>
+              <div class="rv-var t12 faint">Renk: Haki · Beden: S</div>
+              <p class="rv-txt">Beden tablosuna göre aldım ama omuzlardan dar geldi. Değişim için yazdım, hızlı dönüş yaptılar.</p>
+              <div class="reply"><div class="reply-h">Muse Studio'nun cevabı<span class="t12 faint">16 Ekim 2026</span></div><p>Elif Hanım, geri bildiriminiz için teşekkür ederiz. Beden tablosuna omuz ölçüsünü de ekledik.</p></div>
+            </div>
+            <div class="btn outline" style="margin-top:10px">Tüm yorumları gör</div>
+            <div class="store" style="margin-top:30px"><span class="lg">MS</span><div><b>Muse Studio</b><span class="t14 muted">Tüm ürünler</span></div><span class="follow">Takip et</span></div>
+            <div style="height:30px"></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Sepete ekle</div></div></div>
+        <figcaption><b>1.2 · Ürün detay · Yorumlar bölümü</b><span>Ürün bilgi tab'ından sonra, dükkan kartından önce: ortalama, dağılım, puan filtresi ve en fazla 3 yorum; olumsuz yorumlar da görünür.</span></figcaption>
+      </figure>
+
+      <!-- 1.3 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><span class="bag"><svg class="ic"><use href="#i-bag"/></svg><em>1</em></span></span></div>
+          <div class="c">
+            <div class="back" style="margin-top:20px"><svg class="ic"><use href="#i-left"/></svg>Ürüne dön</div>
+            <div class="page-title" style="margin-top:15px">Yorumlar</div>
+            <div class="t14 muted" style="margin-top:5px">Keten gömlek elbise</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:15px"><span class="stars" data-r="5" data-v="4.6"></span><span style="font:600 14px/17px var(--font-sans)">4,6</span><span class="t14 faint">· 128 yorum</span></div>
+          </div>
+          <div class="chips" style="margin-top:20px"><span class="chip">Tümü</span><span class="chip on">Fotoğraflı (24)</span><span class="chip">5 yıldız (93)</span><span class="chip">4 yıldız (22)</span><span class="chip">3 yıldız (8)</span><span class="chip">2 yıldız (5)</span><span class="chip">1 yıldız (0)</span></div>
+          <div class="c">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px"><span class="t14 ph">24 yorum · En yeni</span><svg class="ic"><use href="#i-sort"/></svg></div>
+            <div class="rv">
+              <div class="rv-top"><span class="stars" data-r="5"></span><span class="t12 faint">28 Ekim 2026</span></div>
+              <div class="rv-who">Ayşe K. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span></div>
+              <div class="rv-var t12 faint">Renk: Bej · Beden: M</div>
+              <p class="rv-txt">Kumaşı çok kaliteli, fotoğraftakinden de güzel duruyor. Boyum 1,68 ve M aldım, tam oturdu. Kargo iki günde geldi.</p>
+              <div class="rv-ph"><i></i><i></i></div>
+            </div>
+            <div class="rv">
+              <div class="rv-top"><span class="stars" data-r="4"></span><span class="t12 faint">21 Ekim 2026</span></div>
+              <div class="rv-who">Zeynep A. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span></div>
+              <div class="rv-var t12 faint">Renk: Bej · Beden: L</div>
+              <div class="rv-txt clamp" style="-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)">Rengi fotoğraftakinden biraz daha açık geldi ama yine de çok beğendim. İki kez yıkadım, çekme yapmadı ve ütüsü kolay. Yaz için ideal, kumaşı terletmiyor. Tek eksiği cep olmaması, bir de kemer dahil olsaydı çok daha iyi olurdu. Yine de fiyatına göre gayet başarılı buldum ve ikinci rengini de sipariş ettim.</div>
+              <div class="more">Daha fazla</div>
+              <div class="rv-ph"><i></i></div>
+            </div>
+            <div style="padding:20px 0 30px"><div class="loader"><i></i><i></i></div></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Sepete ekle</div></div></div>
+        <figcaption><b>1.3 · Tüm yorumlar</b><span>Alt sayfa: puan filtresi chip'leri, sonuç satırında sırala ikonu, uzun yorumda fade ve "Daha fazla", sonsuz kaydırma ile yükleme.</span></figcaption>
+      </figure>
+
+      <!-- 1.4 -->
+      <figure class="screen">
+        <div class="phone">
+          <div class="scroll" style="overflow:hidden">
+            <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+            <div class="c"><div class="back" style="margin-top:20px"><svg class="ic"><use href="#i-left"/></svg>Ürüne dön</div><div class="page-title" style="margin-top:15px">Yorumlar</div></div>
+          </div>
+          <div class="ov"></div>
+          <div class="sheet">
+            <div class="handle"></div>
+            <div class="sheet-title" style="margin-top:20px">Sırala</div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-top:25px">
+              <div class="radio">En yeni<svg class="ic tick"><use href="#i-tick"/></svg></div>
+              <div class="radio">En eski<span class="circ"></span></div>
+              <div class="radio">En yüksek puan<span class="circ"></span></div>
+              <div class="radio">En düşük puan<span class="circ"></span></div>
+            </div>
+            <div class="text-clear on" style="margin-top:25px">Tümünü temizle</div>
+            <div class="btn primary" style="margin-top:15px">Uygula</div>
+          </div>
+        </div>
+        <figcaption><b>1.4 · Sırala sheet'i</b><span>Mevcut Sırala kalıbı (7.2); varsayılan "En yeni". Puan filtresi chip'lerle yapıldığı için ayrıca filtre sheet'i yok.</span></figcaption>
+      </figure>
+
+      <!-- 1.5 -->
+      <figure class="screen">
+        <div class="phone">
+          <div class="scroll" style="overflow:hidden">
+            <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+            <div class="c"><div class="back" style="margin-top:20px"><svg class="ic"><use href="#i-left"/></svg>Ürüne dön</div><div class="page-title" style="margin-top:15px">Yorumlar</div></div>
+          </div>
+          <div class="ov"></div>
+          <div class="sheet">
+            <div class="handle"></div>
+            <div class="img pdp" style="margin-top:20px">Yorum fotoğrafı 1/2<div class="dots"><i class="on"></i><i></i></div></div>
+            <div class="rv-top" style="margin-top:20px"><span class="stars" data-r="5"></span><span class="t12 faint">28 Ekim 2026</span></div>
+            <div class="rv-who">Ayşe K. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span></div>
+            <p class="rv-txt" style="max-height:40px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)">Kumaşı çok kaliteli, fotoğraftakinden de güzel duruyor. Boyum 1,68 ve M aldım, tam oturdu.</p>
+            <div class="btn primary" style="margin-top:25px">Kapat</div>
+          </div>
+        </div>
+        <figcaption><b>1.5 · Yorum fotoğrafı</b><span>Yorumdaki küçük fotoğrafa dokununca açılan sheet; ürün detay görseli kalıbı (349², radius 16, dot'lar) ve yorumun kısa özeti.</span></figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- =========================== AKIŞ 2: YORUM YAZMA =========================== -->
+  <section class="flow">
+    <h2>2 · Yorum yazma (sipariş sonrası davet)</h2>
+    <p>Alıcı, siparişinden sonra gelen davetteki bağlantıyla bu sayfaya gelir. Ürün sayfasında herkese açık "Yorum yaz" butonu yok; yorum yalnızca siparişe bağlı yazılır.</p>
+    <div class="row">
+
+      <!-- 2.1 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span></div>
+          <div class="c">
+            <div class="page-title" style="margin-top:20px">Yorum yazın</div>
+            <p class="t14 muted" style="margin-top:5px">Muse Studio'dan aldığınız ürünü değerlendirin.</p>
+            <div class="prod-row" style="margin-top:20px"><div class="img">Görsel</div><div><b>Keten gömlek elbise</b><span class="t12 faint">Renk: Bej · Beden: M · 1 adet</span></div></div>
+            <div class="f-label" style="margin-top:30px">Puanınız</div>
+            <div class="picker ann-wrap"><span class="ann">Öneri · onay bekliyor</span>
+              <svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg>
+            </div>
+            <div class="t14 faint" style="margin-top:8px">Puan vermek için yıldızlara dokunun.</div>
+            <div class="f-label" style="margin-top:30px">Yorumunuz</div>
+            <div class="ta ph-on ann-wrap"><span class="ann">Öneri · onay bekliyor</span>Ürünle ilgili deneyiminizi yazın<span class="cnt">0 / 1000</span></div>
+            <div class="f-label" style="margin-top:30px">Fotoğraflar <small>(Zorunlu değil)</small></div>
+            <div class="up ann-wrap"><span class="ann" style="right:auto;left:100px;top:25px">Öneri · onay bekliyor</span><div class="tile add"><svg class="ic"><use href="#i-plus"/></svg><span>Ekle</span></div></div>
+            <div class="t12 faint" style="margin-top:8px">En fazla 5 fotoğraf · JPG veya PNG</div>
+            <p class="legal" style="margin-top:30px">Yorumunuz <b>Ayşe K.</b> adıyla ve "Doğrulanmış alıcı" etiketiyle yayımlanır. Göndererek <b>Yorum Kuralları</b>'nı okuduğumu beyan ederim.</p>
+            <div style="height:30px"></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn disabled">Yorumu gönder</div></div></div>
+        <figcaption><b>2.1 · Yorum yaz · boş</b><span>Davet bağlantısıyla açılan form; puan seçilene kadar "Yorumu gönder" pasif.</span></figcaption>
+      </figure>
+
+      <!-- 2.2 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span></div>
+          <div class="c">
+            <div class="page-title" style="margin-top:20px">Yorum yazın</div>
+            <p class="t14 muted" style="margin-top:5px">Muse Studio'dan aldığınız ürünü değerlendirin.</p>
+            <div class="prod-row" style="margin-top:20px"><div class="img">Görsel</div><div><b>Keten gömlek elbise</b><span class="t12 faint">Renk: Bej · Beden: M · 1 adet</span></div></div>
+            <div class="f-label" style="margin-top:30px">Puanınız</div>
+            <div class="picker"><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg></div>
+            <div class="t14" style="margin-top:8px;color:var(--ink-900)">Çok beğendim</div>
+            <div class="f-label" style="margin-top:30px">Yorumunuz</div>
+            <div class="ta">Kumaşı çok kaliteli, fotoğraftakinden de güzel duruyor. Boyum 1,68 ve M aldım, tam oturdu.<span class="cnt">96 / 1000</span></div>
+            <div class="f-label" style="margin-top:30px">Fotoğraflar <small>(Zorunlu değil)</small></div>
+            <div class="up">
+              <div class="tile photo"><svg class="ic x"><use href="#i-close"/></svg></div>
+              <div class="tile loading"><div class="loader"><i></i><i></i></div></div>
+              <div class="tile add"><svg class="ic"><use href="#i-plus"/></svg><span>Ekle</span></div>
+            </div>
+            <div class="t12 faint" style="margin-top:8px">2 / 5 fotoğraf · 1 fotoğraf yükleniyor</div>
+            <p class="legal" style="margin-top:30px">Yorumunuz <b>Ayşe K.</b> adıyla ve "Doğrulanmış alıcı" etiketiyle yayımlanır. Göndererek <b>Yorum Kuralları</b>'nı okuduğumu beyan ederim.</p>
+            <div style="height:30px"></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Yorumu gönder</div></div></div>
+        <figcaption><b>2.2 · Yorum yaz · dolu</b><span>Puan seçildi, metin ve fotoğraf eklendi; yüklenen fotoğraf `surface-200` zemin ve loader ile gösterilir.</span></figcaption>
+      </figure>
+
+      <!-- 2.3 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll" style="overflow:hidden">
+          <div class="hdr"><span class="logo">shopier</span></div>
+          <div class="c">
+            <div class="page-title" style="margin-top:20px">Yorum yazın</div>
+            <p class="t14 muted" style="margin-top:5px">Muse Studio'dan aldığınız ürünü değerlendirin.</p>
+            <div class="prod-row" style="margin-top:20px"><div class="img">Görsel</div><div><b>Keten gömlek elbise</b><span class="t12 faint">Renk: Bej · Beden: M · 1 adet</span></div></div>
+            <div class="f-label" style="margin-top:30px">Puanınız</div>
+            <div class="picker"><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></div>
+            <div class="t14" style="margin-top:8px;color:var(--ink-900)">Beğendim</div>
+          </div>
+        </div>
+        <div class="ov"></div>
+        <div class="sheet">
+          <div class="handle"></div>
+          <div style="display:flex;justify-content:center;margin-top:40px;color:var(--ink-900)"><svg class="ic ic48"><use href="#i-info"/></svg></div>
+          <div class="sheet-title" style="margin-top:37px">Yorumunuz gönderilemedi</div>
+          <p class="sheet-txt" style="margin-top:12px">Yazdıklarınız bu sayfada duruyor. Lütfen birazdan tekrar deneyin.</p>
+          <div class="btns" style="margin-top:40px"><div class="btn primary">Tekrar dene</div><div class="btn outline">Vazgeç</div></div>
+          <div style="height:11px"></div>
+        </div>
+        </div>
+        <figcaption><b>2.3 · Hata · gönderilemedi</b><span>Gönderim başarısız olursa durum sheet'i; form içeriği korunur, "Tekrar dene" birincil.</span></figcaption>
+      </figure>
+
+      <!-- 2.4 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span></div>
+          <div class="c">
+            <div class="page-title" style="margin-top:20px">Yorum yazın</div>
+            <div class="f-label" style="margin-top:20px">Puanınız</div>
+            <div class="picker"><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24" class="f"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg><svg viewBox="0 0 24 24"><use href="#i-star"/></svg></div>
+            <div class="t14" style="margin-top:8px;color:var(--ink-900)">İdare eder</div>
+            <div class="f-label" style="margin-top:30px">Yorumunuz</div>
+            <div class="ta err">Güzel<span class="cnt">5 / 1000</span></div>
+            <div class="err-txt">Yorumunuz en az 10 karakter olmalı.</div>
+            <div class="f-label" style="margin-top:30px">Fotoğraflar <small>(Zorunlu değil)</small></div>
+            <div class="up">
+              <div class="tile photo"><svg class="ic x"><use href="#i-close"/></svg></div>
+              <div class="tile bad">Yüklenemedi<svg class="ic x"><use href="#i-close"/></svg></div>
+              <div class="tile add"><svg class="ic"><use href="#i-plus"/></svg><span>Ekle</span></div>
+            </div>
+            <div class="err-txt">Fotoğraf 10 MB'tan büyük olamaz. Başka bir fotoğraf seçin.</div>
+            <p class="legal" style="margin-top:30px">Yorumunuz <b>Ayşe K.</b> adıyla ve "Doğrulanmış alıcı" etiketiyle yayımlanır. Göndererek <b>Yorum Kuralları</b>'nı okuduğumu beyan ederim.</p>
+            <div style="height:30px"></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Yorumu gönder</div></div></div>
+        <figcaption><b>2.4 · Hata · form</b><span>Metin çok kısa ve fotoğraf yüklenemedi: kenar ve yardımcı metin `sale-500` (form hatası kalıbı).</span></figcaption>
+      </figure>
+
+      <!-- 2.5 -->
+      <figure class="screen">
+        <div class="phone"><div class="scroll" style="overflow:hidden">
+          <div class="hdr"><span class="logo">shopier</span></div>
+          <div class="c"><div class="page-title" style="margin-top:20px">Yorum yazın</div>
+            <div class="prod-row" style="margin-top:20px"><div class="img">Görsel</div><div><b>Keten gömlek elbise</b><span class="t12 faint">Renk: Bej · Beden: M · 1 adet</span></div></div></div>
+        </div>
+        <div class="ov"></div>
+        <div class="sheet">
+          <div class="handle"></div>
+          <div style="display:flex;justify-content:center;margin-top:40px;color:var(--ink-900)"><svg class="ic ic48"><use href="#i-tick"/></svg></div>
+          <div class="sheet-title" style="margin-top:37px">Teşekkürler, yorumunuz alındı</div>
+          <p class="sheet-txt" style="margin-top:12px">Yorumunuz kontrol edildikten sonra ürün sayfasında yayımlanacak.</p>
+          <div class="btns" style="margin-top:40px"><div class="btn primary">Ürüne git</div></div>
+          <div style="height:11px"></div>
+        </div>
+        </div>
+        <figcaption><b>2.5 · Başarı</b><span>Durum sheet'i (tick + başlık + metin + tek buton); "Ürüne git" ürün detayına götürür.</span></figcaption>
+      </figure>
+
+      <!-- 2.6 -->
+      <figure class="screen">
+        <div class="phone"><div class="scroll" style="overflow:hidden">
+          <div class="hdr"><span class="logo">shopier</span></div>
+        </div>
+        <div class="ov"></div>
+        <div class="sheet">
+          <div class="handle"></div>
+          <div style="display:flex;justify-content:center;margin-top:40px;color:var(--ink-900)"><svg class="ic ic48"><use href="#i-info"/></svg></div>
+          <div class="sheet-title" style="margin-top:37px">Bu bağlantı artık geçerli değil</div>
+          <p class="sheet-txt" style="margin-top:12px">Bu sipariş için yorum süresi dolmuş ya da yorumunuz daha önce gönderilmiş olabilir.</p>
+          <div class="btns" style="margin-top:40px"><div class="btn primary">Dükkana git</div></div>
+          <div style="height:11px"></div>
+        </div>
+        </div>
+        <figcaption><b>2.6 · Hata · bağlantı geçersiz</b><span>Bloklayıcı hata: süresi dolan, kullanılmış ya da hatalı davet bağlantısında durum sheet'i.</span></figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- =========================== AKIŞ 3: DURUMLAR =========================== -->
+  <section class="flow">
+    <h2>3 · Boş, yükleniyor ve hata durumları (ürün detay)</h2>
+    <p>Yorumlar bölümünün ürün detayında alabileceği durumlar.</p>
+    <div class="row">
+
+      <!-- 3.1 -->
+      <figure class="screen">
+        <div class="phone"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+          <div class="c">
+            <div class="name18" style="margin-top:10px">Pamuk örgü hırka</div>
+            <div class="price18" style="margin-top:12px">980 <small>TL</small></div>
+            <div class="btn-stack" style="margin-top:25px"><div class="btn primary">Sepete ekle</div><div class="btn outline">Hemen al</div></div>
+            <div class="tabs" style="margin-top:30px"><span class="on">Ürün açıklaması</span><span>Teslimat bilgisi</span></div>
+            <p class="t14 muted" style="margin-top:15px">El örgüsü, %100 pamuk. Tek beden.</p>
+            <div class="sec-title" style="margin-top:30px">Yorumlar</div>
+            <p class="t14 ph" style="margin-top:12px">Bu ürün için henüz yorum yok.</p>
+            <p class="t14 faint" style="margin-top:5px">Ürünü satın alanlar, siparişlerinden sonra yorum yazabilir.</p>
+            <div class="store" style="margin-top:30px"><span class="lg">MS</span><div><b>Muse Studio</b><span class="t14 muted">Tüm ürünler</span></div><span class="follow">Takip et</span></div>
+          </div>
+        </div></div>
+        <figcaption><b>3.1 · Boş durum · yorum yok</b><span>Yorumu olmayan üründe adın altındaki puan satırı gizlenir; bölümde arama boş durumu kalıbıyla kısa metin.</span></figcaption>
+      </figure>
+
+      <!-- 3.2 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+          <div class="c">
+            <div class="back" style="margin-top:20px"><svg class="ic"><use href="#i-left"/></svg>Ürüne dön</div>
+            <div class="page-title" style="margin-top:15px">Yorumlar</div>
+            <div class="t14 muted" style="margin-top:5px">Keten gömlek elbise</div>
+          </div>
+          <div class="chips" style="margin-top:20px"><span class="chip">Tümü</span><span class="chip">2 yıldız (5)</span><span class="chip on">1 yıldız (0)</span><span class="chip">Fotoğraflı (24)</span></div>
+          <div class="c">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px"><span class="t14 ph">0 yorum</span><svg class="ic"><use href="#i-sort"/></svg></div>
+            <p class="t14 ph" style="margin-top:20px">Bu filtreye uygun yorum bulunmuyor.</p>
+            <div class="text-link" style="margin-top:12px">Tüm yorumları göster</div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Sepete ekle</div></div></div>
+        <figcaption><b>3.2 · Boş durum · filtre sonucu yok</b><span>Seçili puanda yorum yoksa sola hizalı boş metin ve filtreyi kaldıran text-link.</span></figcaption>
+      </figure>
+
+      <!-- 3.3 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+          <div class="c">
+            <div class="tabs" style="margin-top:10px"><span class="on">Ürün açıklaması</span><span>Teslimat bilgisi</span></div>
+            <p class="t14 muted" style="margin-top:15px">%100 keten kumaş, rahat kesim. Boy uzunluğu M bedende 112 cm.</p>
+            <div class="sec-title" style="margin-top:30px">Yorumlar</div>
+            <div style="padding:40px 0"><div class="loader"><i></i><i></i></div></div>
+            <div class="store"><span class="lg">MS</span><div><b>Muse Studio</b><span class="t14 muted">Tüm ürünler</span></div><span class="follow">Takip et</span></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Sepete ekle</div></div></div>
+        <figcaption><b>3.3 · Yükleniyor</b><span>Yorumlar ürün bilgisinden sonra yüklenir; bölümde mevcut loader (6.10) döner, sayfanın geri kalanı beklemez.</span></figcaption>
+      </figure>
+
+      <!-- 3.4 -->
+      <figure class="screen">
+        <div class="phone has-bar"><div class="scroll">
+          <div class="hdr"><span class="logo">shopier</span><span class="hdr-ic"><svg class="ic"><use href="#i-search"/></svg><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><svg class="ic"><use href="#i-bag"/></svg></span></div>
+          <div class="c">
+            <div class="tabs" style="margin-top:10px"><span class="on">Ürün açıklaması</span><span>Teslimat bilgisi</span></div>
+            <p class="t14 muted" style="margin-top:15px">%100 keten kumaş, rahat kesim. Boy uzunluğu M bedende 112 cm.</p>
+            <div class="sec-title" style="margin-top:30px">Yorumlar</div>
+            <div class="notif" style="margin-top:15px"><svg class="ic"><use href="#i-info"/></svg><span>Yorumlar şu an yüklenemedi.</span><span class="nbtn">Tekrar dene</span></div>
+            <div class="store" style="margin-top:30px"><span class="lg">MS</span><div><b>Muse Studio</b><span class="t14 muted">Tüm ürünler</span></div><span class="follow">Takip et</span></div>
+          </div>
+        </div>
+        <div class="bar"><div class="btn primary">Sepete ekle</div></div></div>
+        <figcaption><b>3.4 · Hata · yorumlar yüklenemedi</b><span>Ürün sayfası çalışmaya devam eder; bölümde aksiyon butonlu notification bar ile "Tekrar dene".</span></figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- =========================== DESKTOP =========================== -->
+  <section class="flow">
+    <h2>4 · Desktop (1440) · ürün detay Yorumlar bölümü</h2>
+    <p>%50 ölçekte gösteriliyor. Solda 349 px özet kolonu, sağda yorum listesi; kenar 64 px.</p>
+    <div class="row">
+      <figure class="screen" style="flex-basis:720px">
+        <div class="dk-wrap"><div class="dk">
+          <div class="hdr"><span class="logo">shopier</span><span class="dk-search"><svg class="ic"><use href="#i-search"/></svg>Ara</span><span class="hdr-ic"><svg class="ic"><use href="#i-truck"/></svg><svg class="ic"><use href="#i-person"/></svg><span class="bag"><svg class="ic"><use href="#i-bag"/></svg><em>1</em></span></span></div>
+          <div class="dk-main">
+            <div class="dk-thumbs"><i class="on"></i><i></i><i></i></div>
+            <div class="img" style="width:458px;height:458px;border-radius:16px">Ürün görseli</div>
+            <div class="dk-col">
+              <div style="font:700 22px/28px var(--font-sans)">Keten gömlek elbise</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:8px"><span class="stars" data-r="5" data-v="4.6"></span><span style="font:600 14px/17px var(--font-sans)">4,6</span><span class="text-link" style="text-decoration:underline">128 yorum</span></div>
+              <div style="font:500 20px/25px var(--font-sans);color:var(--ink-700);margin-top:12px">1.450 <small style="font-size:17px">TL</small></div>
+              <div class="f-label" style="margin-top:20px">Beden</div>
+              <div style="margin-top:12px;display:flex;gap:10px"><span class="chip">S</span><span class="chip on">M</span><span class="chip">L</span></div>
+              <div class="btn-stack" style="margin-top:25px"><div class="btn primary">Sepete ekle</div><div class="btn outline">Hemen al</div></div>
+            </div>
+          </div>
+          <div class="dk-rv">
+            <div class="dk-rv-left">
+              <div style="font:600 24px/30px var(--font-sans)">Yorumlar (128)</div>
+              <div class="sum" style="margin-top:20px">
+                <div class="sum-avg"><div class="big">4,6</div><span class="stars" data-r="5" data-v="4.6"></span><div class="t12 faint">128 yorum</div></div>
+                <div class="dist">
+                  <div class="dist-row"><span class="lb">5 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:73%"></i></span><span class="n">93</span></div>
+                  <div class="dist-row"><span class="lb">4 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:17%"></i></span><span class="n">22</span></div>
+                  <div class="dist-row"><span class="lb">3 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:6%"></i></span><span class="n">8</span></div>
+                  <div class="dist-row"><span class="lb">2 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:4%"></i></span><span class="n">5</span></div>
+                  <div class="dist-row"><span class="lb">1 <svg class="ic16" style="fill:var(--ink-900)"><use href="#i-star"/></svg></span><span class="track"><i style="width:0"></i></span><span class="n">0</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px 10px;margin-top:25px"><span class="chip on">Tümü</span><span class="chip">Fotoğraflı (24)</span><span class="chip">5 yıldız (93)</span><span class="chip">4 yıldız (22)</span><span class="chip">3 yıldız (8)</span><span class="chip">2 yıldız (5)</span></div>
+            </div>
+            <div class="dk-rv-right">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span class="t14 ph">128 yorum · En yeni</span><svg class="ic"><use href="#i-sort"/></svg></div>
+              <div class="rv">
+                <div class="rv-top"><span class="stars" data-r="5"></span><span class="t12 faint">28 Ekim 2026</span></div>
+                <div class="rv-who">Ayşe K. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span><span class="t12 faint" style="font-weight:500">Renk: Bej · Beden: M</span></div>
+                <p class="rv-txt">Kumaşı çok kaliteli, fotoğraftakinden de güzel duruyor. Boyum 1,68 ve M aldım, tam oturdu. Kargo iki günde geldi.</p>
+                <div class="rv-ph"><i></i><i></i></div>
+                <div class="reply"><div class="reply-h">Muse Studio'nun cevabı<span class="t12 faint">29 Ekim 2026</span></div><p>Ayşe Hanım, güzel yorumunuz için teşekkür ederiz. Keyifle giymenizi dileriz.</p></div>
+              </div>
+              <div class="rv">
+                <div class="rv-top"><span class="stars" data-r="2"></span><span class="t12 faint">15 Ekim 2026</span></div>
+                <div class="rv-who">Elif T. <span class="badge"><svg class="ic ic16"><use href="#i-tick"/></svg>Doğrulanmış alıcı</span><span class="t12 faint" style="font-weight:500">Renk: Haki · Beden: S</span></div>
+                <p class="rv-txt">Beden tablosuna göre aldım ama omuzlardan dar geldi. Değişim için yazdım, hızlı dönüş yaptılar.</p>
+              </div>
+            </div>
+          </div>
+        </div></div>
+        <figcaption><b>4.1 · Desktop · ürün detay</b><span>Adın altında puan satırı; aşağıda iki kolonlu Yorumlar bölümü. Sırala ve fotoğraf sheet'leri desktop'ta ortalanmış modal olur (7.5).</span></figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<script>
+// Yıldızları doldurur: data-r = yıldız sayısı (tam), data-v = ortalama (yuvarlanır)
+document.querySelectorAll('.stars').forEach(function(el){
+  var v = el.dataset.v ? Math.round(parseFloat(el.dataset.v)) : parseInt(el.dataset.r,10);
+  var h = '';
+  for (var i=1;i<=5;i++){ h += '<svg viewBox="0 0 24 24"'+(i<=v?' class="f"':'')+'><use href="#i-star"/></svg>'; }
+  el.innerHTML = h;
+});
+</script>
+</body>
+</html>
