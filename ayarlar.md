@@ -8,11 +8,11 @@ Bu dosyanın sahibi Product Lead'dir. Ajanlar ve Koordinatör bu dosyayı okur, 
 |---|---|
 | Kanal | `#claude` · `C0CB3LDUB3R` |
 | Product Lead (Patron) | İmge Aksoy · `U0BLV2VFG1Y` |
-| Product Manager | **DOLDURULACAK** · Slack kullanıcı ID'si |
-| Başlatma kelimesi | `Başlat` (yalnızca Product Lead) |
+| Product Manager | Her özellikte, özellik mesajını kanala yazan kişi |
+| Başlatma kelimesi | `Başlat` (kanaldaki herhangi biri, özellik mesajının thread'ine) |
 | Onay / revize | `Onay` · `Revize: <yorum>` |
 
-PM satırı doldurulmadan akış Araştırma aşamasının onay kapısında bekler; Koordinatör thread'e PM'in tanımlı olmadığını yazar.
+Özellik mesajını Product Lead yazdıysa o özellikte PM ve Product Lead aynı kişidir; iki onay da ondan beklenir.
 
 ## Jira
 
@@ -21,6 +21,15 @@ PM satırı doldurulmadan akış Araştırma aşamasının onay kapısında bekl
 | Site | `https://shopier.atlassian.net` · cloudId `2a9f61a6-a761-4651-bd4f-2e4b9f34e1fe` |
 | Proje | Shopier Test Board · `STB` |
 | Issue tipleri | Epic (özellik) · Story (kullanıcı hikayeleri) |
+
+## Figma
+
+| Ayar | Değer |
+|---|---|
+| Bağlantı | Figma connector'ı (İmge'nin hesabı, bağlı) |
+| Design system dosyası | `Shopier-Test-Figma` › "Storev3 - Design system" sayfası · dosya linki: **DOLDURULACAK** |
+
+Link yoksa Tasarım ajanı yalnızca DESIGN.md ile çalışır.
 
 ## Kaynaklar
 

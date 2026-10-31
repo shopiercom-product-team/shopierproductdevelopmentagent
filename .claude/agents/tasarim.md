@@ -27,7 +27,7 @@ Bu ajan şu işlerde çağrılır:
 - `ozellikler/<kisa-ad>/durum.md`
 - `ozellikler/<kisa-ad>/arastirma.md` (onaylı)
 - `referanslar/DESIGN.md`, `referanslar/design-md-kararlari.md`
-- Figma bağlantısı varsa `Shopier-Test-Figma` › "Storev3 - Design system" (yalnızca okuma)
+- Figma: `ayarlar.md`'deki design system dosya linki doluysa Figma connector'ı ile (`get_design_context`, `get_screenshot`, `search_design_system`) "Storev3 - Design system" sayfası (yalnızca okuma). DESIGN.md ile çelişirse `design-md-kararlari.md` 1. karar geçerli: Figma esas.
 
 ## Kendi defteri
 

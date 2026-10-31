@@ -6,8 +6,8 @@ Shopier'de bir özelliğin fikirden Jira task'ına kadar ilerlediği ajan akış
 
 | Rol | Kim | Görevi |
 |---|---|---|
-| **Product Lead (Patron)** | İnsan · İmge Aksoy | Akışın sahibi. Özelliği "Başlat" ile başlatır, her aşamada son onayı verir. |
-| **Product Manager (PM)** | İnsan · `ayarlar.md` | Her aşamanın çıktısını ilk inceleyen kişi. Onaylar ya da yorumuyla geri gönderir. Onayladığı son hâli Product Lead'e sunulur. |
+| **Product Lead (Patron)** | İnsan · İmge Aksoy | Akışın sahibi. Her aşamada son onayı verir. |
+| **Product Manager (PM)** | İnsan · özellik mesajını kanala yazan kişi | O özelliğin her aşamasında çıktıyı ilk inceleyen kişi. Onaylar ya da yorumuyla geri gönderir. Onayladığı son hâli Product Lead'e sunulur. |
 | **Koordinatör** | Ana Claude oturumu | Akışı yürütür: ajanları çağırır, çıktıları yayınlar, Slack'te PM'e ve Product Lead'e sunar, cevapları okur, durumu deftere yazar. **Kendisi onay vermez.** |
 | **Araştırma ajanı** | `.claude/agents/arastirma.md` | Benchmark ve pratik araştırması. |
 | **Tasarım ajanı** | `.claude/agents/tasarim.md` | DESIGN.md'ye göre ekran tasarımı. |
@@ -58,7 +58,7 @@ Ajan çıktı üretir
 
 | # | Aşama | Kim yapar | Girdi | Çıktı |
 |---|---|---|---|---|
-| 0 | Başlatma | Product Lead | Kanala yazılan özellik mesajı + thread'de "Başlat" | `durum.md` |
+| 0 | Başlatma | Herhangi biri | Kanala yazılan özellik mesajı + thread'de "Başlat" | `durum.md` (PM = mesajı yazan) |
 | 1 | Araştırma | Araştırma ajanı | Özellik tanımı | Benchmark artifact'i |
 | 2 | Tasarım | Tasarım ajanı | Onaylı araştırma + DESIGN.md | Tasarım artifact'i |
 | 3 | PRD | PRD ajanı | Onaylı araştırma + tasarım | PRD dosyası |

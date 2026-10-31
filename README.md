@@ -4,10 +4,10 @@ Slack'te yazılan bir özellik fikrini araştırma → tasarım → PRD → prot
 
 ## Nasıl kullanılır
 
-1. `#claude` kanalına özelliği bir mesaj olarak yaz.
-2. İmge Aksoy o mesajın thread'ine `Başlat` yazar.
+1. PM `#claude` kanalına özelliği bir mesaj olarak yazar. Mesajı yazan kişi o özelliğin PM'idir.
+2. Herhangi biri o mesajın thread'ine `Başlat` yazar.
 3. Akış her 15 dakikada bir thread'i okur; çıktıları thread'e koyar ve onay ister.
-4. PM ve sonra Product Lead thread'e `Onay` ya da `Revize: <yorum>` yazar.
+4. Her aşamada önce PM, sonra İmge Aksoy (Product Lead) etiketlenir; thread'e `Onay` ya da `Revize: <yorum>` yazarlar.
 5. Bütün aşamalar onaylanınca Shopier Test Board'da (STB) Epic ve Story'ler açılır, linkler thread'e gelir.
 
 ## Dosyalar
