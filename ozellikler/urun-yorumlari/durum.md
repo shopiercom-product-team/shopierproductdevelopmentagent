@@ -11,9 +11,9 @@ Bu dosyanın sahibi Koordinatör'dür.
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
 | Aşama | 2 · Tasarım |
-| Bekleyen | PM |
+| Bekleyen | Product Lead |
 | Revize sayısı | 0 |
-| Son sunum ts | 1793433646.662009 |
+| Son sunum ts | 1793434122.648459 |
 | Durum | Devam ediyor |
 | Not | - |
 
@@ -37,7 +37,7 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 | Aşama | PM onayı | Product Lead onayı |
 |---|---|---|
 | 1 · Araştırma | Onay · ipek şimşek · 2026-10-31 10:41 | Onay · İmge Aksoy · 2026-10-31 10:49 |
-| 2 · Tasarım | - | - |
+| 2 · Tasarım | Onay · ipek şimşek · 2026-10-31 11:05 | - |
 | 3 · PRD | - | - |
 | 4 · Prototip | - | - |
 | 5 · CTO değerlendirmesi | - | - |
