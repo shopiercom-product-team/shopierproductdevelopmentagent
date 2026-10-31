@@ -11,9 +11,9 @@ Bu dosyanın sahibi Koordinatör'dür.
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
 | Aşama | 3 · PRD |
-| Bekleyen | Ajan |
+| Bekleyen | PM |
 | Revize sayısı | 0 |
-| Son sunum ts | 1793434122.648459 |
+| Son sunum ts | 1793434820.915699 |
 | Durum | Devam ediyor |
 | Not | - |
 
@@ -27,7 +27,7 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 |---|---|---|
 | 1 · Araştırma | arastirma.html | https://claude.ai/artifact/PexgEvujMXxusT9TfWuoAi |
 | 2 · Tasarım | tasarim.html | https://claude.ai/artifact/BF9h4khLjcXBrSiYgHeGJ6 |
-| 3 · PRD | prd-urun-yorumlari.md | - |
+| 3 · PRD | prd-urun-yorumlari.md | https://shopierproducttest.slack.com/files/U0BLV2VFG1Y/F0CDU7EE03B/prd-urun-yorumlari.md |
 | 4 · Prototip | prototip.html | - |
 | 5 · CTO değerlendirmesi | (manuel) | - |
 | 6 · Jira | jira.md | - |
