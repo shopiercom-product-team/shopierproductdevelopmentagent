@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ürün Yorumları Araştırması</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-500:#6700FF; --ink-900:#0B0F34; --ink-700:#2F3352; --ink-500:#545670; --ink-400:#787A8E; --ink-300:#9C9EAC;
+  --line-300:#D0D0D7; --line-200:#E2E2E5; --surface-100:#F7F7F7; --surface-0:#FFFFFF; --sale-500:#EE3124;
+  --sale-50:rgba(238,49,36,.10); --ok-bg:rgba(103,0,255,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink-900:#F1F1F1; --ink-700:#E2E2E5; --ink-500:#D0D0D7; --ink-400:#9FA0A5; --ink-300:#9C9EAC;
+    --line-300:#414561; --line-200:#2F3352; --surface-100:#141838; --surface-0:#0B0F34; --brand-500:#A877FF; --ok-bg:rgba(168,119,255,.14);
+  }
+}
+:root[data-theme="dark"]{
+  --ink-900:#F1F1F1; --ink-700:#E2E2E5; --ink-500:#D0D0D7; --ink-400:#9FA0A5; --ink-300:#9C9EAC;
+  --line-300:#414561; --line-200:#2F3352; --surface-100:#141838; --surface-0:#0B0F34; --brand-500:#A877FF; --ok-bg:rgba(168,119,255,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-0);color:var(--ink-900);font-family:"Urbanist",-apple-system,"Segoe UI",sans-serif;font-weight:500;font-size:16px;line-height:24px}
+.wrap{max-width:960px;margin:0 auto;padding:30px 22px 64px}
+header{border-bottom:1px solid var(--line-200);padding-bottom:22px;margin-bottom:30px}
+.eyebrow{font-size:14px;line-height:20px;color:var(--ink-400);font-weight:600}
+h1{font-size:32px;line-height:40px;font-weight:700;margin:8px 0 10px}
+h2{font-size:24px;line-height:30px;font-weight:600;margin:40px 0 15px}
+h3{font-size:18px;line-height:24px;font-weight:700;margin:0 0 8px;color:var(--ink-900)}
+p,li{color:var(--ink-700)}
+.meta{font-size:14px;line-height:20px;color:var(--ink-500)}
+nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+nav a{font-size:14px;line-height:17px;padding:8px 15px;border-radius:18px;background:var(--surface-100);color:var(--ink-700);text-decoration:none}
+a{color:var(--brand-500)}
+ul{padding-left:20px} li{margin-bottom:8px}
+.note{font-size:14px;line-height:20px;color:var(--ink-500);background:var(--surface-100);border-radius:11px;padding:12px 15px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line-200);border-radius:16px}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:14px;line-height:20px}
+th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line-200)}
+th{background:var(--surface-100);color:var(--ink-900);font-weight:600;position:sticky;top:0}
+td:first-child{font-weight:700;color:var(--ink-900);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:12px;line-height:16px;padding:2px 8px;border-radius:5px;background:var(--surface-100);color:var(--ink-500);font-weight:600}
+.unv{display:inline-block;font-size:12px;line-height:16px;padding:2px 8px;border-radius:5px;background:var(--sale-50);color:var(--sale-500);font-weight:600}
+sup a{text-decoration:none;font-size:12px}
+.cards{display:grid;gap:15px}
+.card{border:1px solid var(--line-200);border-radius:16px;padding:18px 20px}
+.card dl{margin:0;display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:14px;line-height:20px}
+.card dt{color:var(--ink-400);font-weight:600}
+.card dd{margin:0;color:var(--ink-700)}
+.opt{border:1px solid var(--line-200);border-radius:16px;padding:18px 20px}
+.opt.rec{border:2px solid var(--brand-500);background:var(--ok-bg)}
+.rec-badge{display:inline-block;font-size:12px;line-height:16px;font-weight:700;color:#fff;background:var(--brand-500);border-radius:5px;padding:2px 8px;margin-left:8px;vertical-align:middle}
+.pm{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px}
+.pm h4{margin:0 0 5px;font-size:14px;font-weight:700;color:var(--ink-900)}
+.pm ul{margin:0;font-size:14px;line-height:20px}
+ol.src{font-size:14px;line-height:20px;padding-left:22px}
+ol.src li{word-break:break-word}
+@media (max-width:640px){
+  h1{font-size:23px;line-height:28px}
+  h2{font-size:20px;line-height:25px}
+  .pm{grid-template-columns:1fr}
+  .card dl{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Aşama 1 · Araştırma · Benchmark raporu</div>
+  <h1>Ürün yorumları (ürün detay sayfası)</h1>
+  <p class="meta">Özellik: Dükkan sayfalarındaki ürün detay sayfasından ürün yorumu yapılabilmesi ve yorumların görüntülenmesi. · PM: ipek şimşek · Hazırlanma: 31 Ekim 2026 · Sürüm 1</p>
+  <nav>
+    <a href="#ozet">Özet</a><a href="#benchmark">Benchmark</a><a href="#pratikler">Pratikler</a><a href="#secenekler">Seçenekler</a><a href="#kaynaklar">Kaynaklar</a><a href="#sorular">Açık sorular</a><a href="#revizyon">Revizyon geçmişi</a>
+  </nav>
+</header>
+
+<section id="ozet">
+<h2>Özet</h2>
+<ul>
+  <li><strong>Mevzuat ürünü şekillendiriyor:</strong> 1 Temmuz 2026'da Resmî Gazete'de yayımlanan yönetmelik değişikliğiyle, satın almanın doğrulanamadığı kaynaklardan gelen tüketici yorumları yayımlanamıyor. Reklam Kurulu da olumsuz yorumları yayımlamayan bir pazaryerine ceza verdi. Bu yüzden Shopier'de "yalnızca satın alan yorum yapar" kuralı ve "satıcı olumsuz yorumu gizleyemez" kuralı başlangıçtan gerekli görünüyor.<sup><a href="#k1">[1]</a><a href="#k2">[2]</a></sup></li>
+  <li><strong>Türk rakipler yorumu satıcının ayarına bırakıyor:</strong> ikas ve IdeaSoft'ta yorumu kimin yazabileceğini ve yorumun otomatik mi, satıcı onayıyla mı yayımlanacağını satıcı seçiyor. IdeaSoft'ta satıcı yorum metnini ve puanını bile düzenleyebiliyor. Bu esneklik yeni mevzuatla çelişme riski taşıyor.<sup><a href="#k3">[3]</a><a href="#k4">[4]</a></sup></li>
+  <li><strong>Yorum sayısını asıl artıran şey sipariş sonrası davet:</strong> ikas, Judge.me ve Etsy, yorumu teslimattan sonra gönderilen e-posta ya da bildirimle istiyor. Etsy'de yorum süresi teslimattan itibaren 100 gün.<sup><a href="#k3">[3]</a><a href="#k6">[6]</a><a href="#k8">[8]</a></sup></li>
+  <li><strong>Ortak çekirdek:</strong> 1–5 yıldız, metin, isteğe bağlı fotoğraf, "doğrulanmış alıcı" etiketi, satıcının herkese açık cevabı ve ürün sayfasında ortalama puan. Yorum özetini yapay zekâyla üretmek (Amazon, Hepsiburada) ikinci dalga bir pratik.<sup><a href="#k5">[5]</a><a href="#k7">[7]</a><a href="#k9">[9]</a><a href="#k10">[10]</a></sup></li>
+  <li><strong>Öneri (B seçeneği):</strong> Siparişe bağlı, doğrulanmış yorum: yıldız, metin ve fotoğraf. Yorumu sipariş sonrası davetle iste, satıcı cevap verebilsin ama yorumu silemesin. Moderasyonu Shopier yapsın. Yapay zekâ özeti sonraki faza kalsın.</li>
+</ul>
+</section>
+
+<section id="benchmark">
+<h2>Benchmark tablosu</h2>
+<p class="note">Sütunlar şu sırayla seçildi: kim yorum yazabilir (güven ve mevzuat), yorum nasıl istenir (yorum hacmi), içerik (alıcı deneyimi), kim yayına alır (satıcı yetkisi ve mevzuat riski), satıcı cevabı, ürün sayfasında nasıl gösterilir. Kaynağı olmayan hücreler <span class="unv">doğrulanmadı</span> diye işaretlendi.</p>
+<div class="tablewrap">
+<table>
+<thead><tr>
+<th>Örnek</th><th>Kim yorum yazabilir</th><th>Tetikleyici / davet</th><th>İçerik</th><th>Moderasyon (kim yayına alır)</th><th>Satıcı cevabı</th><th>Gösterim / ücret</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ikas <span class="tag">TR altyapı</span></td>
+<td>Satıcı seçiyor: herkes ya da yalnızca hesabı olanlar<sup><a href="#k3">[3]</a></sup></td>
+<td>Otomasyon: sipariş durumuna göre değerlendirme e-postası ve hatırlatma. Yorum ürün sayfasından da yazılabiliyor<sup><a href="#k3">[3]</a><a href="#k11">[11]</a></sup></td>
+<td>Yıldız (filtre olarak geçiyor). Fotoğraf <span class="unv">doğrulanmadı</span></td>
+<td>Satıcı seçiyor: otomatik ya da manuel onay. Satıcı onaylıyor, reddediyor, siliyor<sup><a href="#k3">[3]</a></sup></td>
+<td>Var, panelden<sup><a href="#k3">[3]</a></sup></td>
+<td>Ürün sayfası. Ücret <span class="unv">doğrulanmadı</span></td>
+</tr>
+<tr>
+<td>IdeaSoft <span class="tag">TR altyapı</span></td>
+<td>Üye girişi şart. Satın alma şartı satıcının ayarı<sup><a href="#k4">[4]</a></sup></td>
+<td>Davet <span class="unv">doğrulanmadı</span>. Uygulama mağazasında üçüncü taraf yorum uygulaması (PeopleSay) var<sup><a href="#k12">[12]</a></sup></td>
+<td>Başlık, metin, puan, anonim paylaşım. Görsel ekleme ayarla açılıyor<sup><a href="#k4">[4]</a></sup></td>
+<td>Satıcı seçiyor: otomatik ya da yönetici onayı. Satıcı metni ve puanı düzenleyebiliyor, silebiliyor<sup><a href="#k4">[4]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Tema ayarıyla ürün sayfasında. Varyant yorumları ana üründe gösterilebiliyor<sup><a href="#k4">[4]</a></sup></td>
+</tr>
+<tr>
+<td>Ticimax <span class="tag">TR altyapı</span></td>
+<td colspan="6"><span class="unv">doğrulanmadı</span>: Herkese açık bir yardım dokümanı bulunamadı.</td>
+</tr>
+<tr>
+<td>T-Soft <span class="tag">TR altyapı</span></td>
+<td colspan="6"><span class="unv">doğrulanmadı</span>: Herkese açık bir yardım dokümanı bulunamadı.</td>
+</tr>
+<tr>
+<td>Shopify + Shop uygulaması <span class="tag">Global</span></td>
+<td>Shop'ta yalnızca o satıcıdan ürün satın almış müşteriler<sup><a href="#k5">[5]</a></sup></td>
+<td>Satın alma sonrası Shop uygulamasında. Yerleşik yorum uygulaması 2024'te kapatıldı. Mağaza vitrininde yorum için uygulama gerekiyor (ör. Judge.me)<sup><a href="#k5">[5]</a><a href="#k6">[6]</a><a href="#k13">[13]</a></sup></td>
+<td>1–5 yıldız, en fazla 1.000 karakter metin<sup><a href="#k5">[5]</a></sup></td>
+<td>Shop'un yorum politikasına göre ön tarama yapılabiliyor<sup><a href="#k5">[5]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span> (Shop için)</td>
+<td>Shop'ta ürün sayfasında ortalama ve yorumlar herkese açık. Judge.me'nin ücretsiz planı var<sup><a href="#k5">[5]</a><a href="#k6">[6]</a></sup></td>
+</tr>
+<tr>
+<td>WooCommerce <span class="tag">Global</span></td>
+<td>Ayar: herkes ya da yalnızca "doğrulanmış sahip"<sup><a href="#k7">[7]</a></sup></td>
+<td>Ürün sayfasındaki form. Davet yerleşik değil, eklentiyle yapılıyor <span class="unv">doğrulanmadı</span></td>
+<td>Yıldız (zorunlu yapılabilir) ve metin<sup><a href="#k7">[7]</a></sup></td>
+<td>Bekleyen yorumu satıcı onaylıyor ya da geri alıyor<sup><a href="#k7">[7]</a></sup></td>
+<td>Var, cevap yorumla birlikte gruplanıyor<sup><a href="#k7">[7]</a></sup></td>
+<td>Ürün sayfasında form ve liste. "Doğrulanmış sahip" etiketi. Ücretsiz<sup><a href="#k7">[7]</a></sup></td>
+</tr>
+<tr>
+<td>Wix Stores <span class="tag">Global</span></td>
+<td>Satın alanlarla sınırlama ayrı bir yardım makalesinde anlatılıyor, ayrıntı <span class="unv">doğrulanmadı</span><sup><a href="#k14">[14]</a></sup></td>
+<td>Yorum isteme altyapısı (Review Requests API) var<sup><a href="#k15">[15]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Moderasyona takılan yorum, satıcı onaylayana ya da reddedene kadar bekliyor<sup><a href="#k15">[15]</a></sup></td>
+<td>Var<sup><a href="#k14">[14]</a></sup></td>
+<td>Wix Stores'a entegre<sup><a href="#k15">[15]</a></sup></td>
+</tr>
+<tr>
+<td>Etsy <span class="tag">Pazaryeri</span></td>
+<td>Yalnızca Etsy'den satın alan alıcı<sup><a href="#k8">[8]</a></sup></td>
+<td>Teslimattan sonra 100 gün içinde (dijital üründe ilk indirmeden itibaren)<sup><a href="#k8">[8]</a></sup></td>
+<td>1–5 yıldız, metin, fotoğraf ya da video<sup><a href="#k8">[8]</a><a href="#k16">[16]</a></sup></td>
+<td>Etsy yapıyor. Satıcı yalnızca bildiriyor. Etsy, satıcı istedi diye yorumu kaldırmıyor<sup><a href="#k8">[8]</a><a href="#k16">[16]</a></sup></td>
+<td>Var, herkese açık. Cevaplar da politikaya tabi<sup><a href="#k8">[8]</a><a href="#k16">[16]</a></sup></td>
+<td>Dükkan puanı güncel yorumlara daha çok ağırlık veren bir ortalama<sup><a href="#k8">[8]</a></sup></td>
+</tr>
+<tr>
+<td>Amazon <span class="tag">Pazaryeri</span></td>
+<td>Herkes. "Customers say" özeti yalnızca doğrulanmış satın alma yorumlarından üretiliyor<sup><a href="#k9">[9]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Yıldız, metin, medya. Yapay zekâ özeti ve özelliğe göre filtre<sup><a href="#k9">[9]</a></sup></td>
+<td>Amazon yapıyor <span class="unv">doğrulanmadı</span></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Özet paragraf ve özellik etiketleri. Özetin yanıltıcı olabildiğine dair satıcı şikâyetleri var<sup><a href="#k9">[9]</a><a href="#k17">[17]</a></sup></td>
+</tr>
+<tr>
+<td>Hepsiburada / Trendyol <span class="tag">Pazaryeri TR</span></td>
+<td><span class="unv">doğrulanmadı</span> (resmî satıcı dokümanına ulaşılamadı)</td>
+<td>Hepsiburada'da "Hızlı Yorum" aracı<sup><a href="#k10">[10]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Reklam Kurulu, Trendyol'u olumsuz yorumları yayımlamadığı için, Hepsiburada'yı da kalıp olumlu yorumlar nedeniyle cezalandırdı. Trendyol, siparişle ya da sistemle ilgili talepleri yorum olarak kabul etmiyor<sup><a href="#k2">[2]</a><a href="#k18">[18]</a></sup></td>
+<td><span class="unv">doğrulanmadı</span></td>
+<td>Hepsiburada'da yapay zekâ ile "Değerlendirme Özeti"<sup><a href="#k10">[10]</a></sup></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="pratikler">
+<h2>Pratikler</h2>
+<div class="cards">
+  <div class="card"><h3>1. Yorumu satın almaya bağlama ve "doğrulanmış alıcı" etiketi</h3><dl>
+    <dt>Ne</dt><dd>Yorumu yalnızca ürünü satın almış alıcı yazar. Yorumun yanında satın almanın doğrulandığı görünür.</dd>
+    <dt>Kim yapıyor</dt><dd>Etsy, Shop uygulaması, WooCommerce (ayar), IdeaSoft (ayar), Amazon (özet için)</dd>
+    <dt>Taraf</dt><dd>Alıcı (güven) · satıcı (sahte yorum riskinin azalması)</dd>
+    <dt>Shopier için</dt><dd>Shopier'de her ödeme Shopier üzerinden geçiyor. Bu yüzden doğrulama sipariş kaydıyla doğal olarak yapılabilir. Yeni yönetmelik de bunu fiilen zorunlu kılıyor. Misafir alıcıların nasıl yorum yazacağı açık bir soru.</dd></dl></div>
+  <div class="card"><h3>2. Sipariş sonrası yorum daveti ve hatırlatma</h3><dl>
+    <dt>Ne</dt><dd>Teslimattan ya da belirli bir sipariş durumundan sonra alıcıya e-posta veya bildirim gider. Yorum bağlantısı ürüne özeldir.</dd>
+    <dt>Kim yapıyor</dt><dd>ikas (otomasyon ve hatırlatma), Judge.me, Etsy (100 günlük süre), Wix (Review Requests)</dd>
+    <dt>Taraf</dt><dd>Alıcı (yorum yazma kolaylığı) · satıcı (yorum hacmi)</dd>
+    <dt>Shopier için</dt><dd>Ürün sayfasındaki form tek başına az yorum toplar. Davet kanalı (e-posta, SMS, Shop uygulaması bildirimi) ve gönderim zamanı ürün kararı.</dd></dl></div>
+  <div class="card"><h3>3. Satıcı cevap verebilir ama yorumu silemez ya da düzenleyemez</h3><dl>
+    <dt>Ne</dt><dd>Satıcı herkese açık cevap yazar. Yorumu kaldırma yetkisi platformdadır ve yalnızca kural ihlalinde kullanılır.</dd>
+    <dt>Kim yapıyor</dt><dd>Etsy. Karşı örnekler: IdeaSoft ve ikas'ta satıcı yorumu onaylıyor, siliyor, hatta düzenleyebiliyor.</dd>
+    <dt>Taraf</dt><dd>Satıcı (cevap hakkı) · alıcı (yorumun sansürlenmeyeceği güveni)</dd>
+    <dt>Shopier için</dt><dd>Reklam Kurulu kararı ve yeni yönetmelik nedeniyle "satıcı onaylı yayın" modeli riskli. Satıcıya cevap ve "bildir" yetkisi vermek daha güvenli.</dd></dl></div>
+  <div class="card"><h3>4. Fotoğraflı ve videolu yorum</h3><dl>
+    <dt>Ne</dt><dd>Alıcı yoruma ürün fotoğrafı ya da videosu ekler. Bu görseller ürün sayfasında herkese görünür.</dd>
+    <dt>Kim yapıyor</dt><dd>Etsy, IdeaSoft (ayar), Judge.me</dd>
+    <dt>Taraf</dt><dd>Alıcı (gerçek ürün görüntüsü) · satıcı (sosyal kanıt)</dd>
+    <dt>Shopier için</dt><dd>Shopier satıcılarının çoğu Instagram'dan geliyor. "Ürün geldiğinde fotoğraftaki gibi mi?" sorusuna doğrudan cevap verir. Görsel moderasyonu ek iş yükü getirir.</dd></dl></div>
+  <div class="card"><h3>5. Ürün sayfasında özet: ortalama puan, dağılım, sıralama</h3><dl>
+    <dt>Ne</dt><dd>Ürün adının yakınında ortalama yıldız ve yorum sayısı görünür. Altta yorum listesi ve puan filtresi bulunur.</dd>
+    <dt>Kim yapıyor</dt><dd>Shop uygulaması, WooCommerce, Etsy (güncel yorumlara ağırlık veren ortalama), ikas (panelde puan filtresi)</dd>
+    <dt>Taraf</dt><dd>Alıcı</dd>
+    <dt>Shopier için</dt><dd>Yönetmelik, sıralama ve yayın ilkelerinin düzenlendiğini söylüyor. Varsayılan sıralama (en yeni gibi) ve "en faydalı" gibi seçenekler hukukla birlikte netleşmeli.</dd></dl></div>
+  <div class="card"><h3>6. Yapay zekâ ile yorum özeti</h3><dl>
+    <dt>Ne</dt><dd>Çok sayıda yorum, tek bir paragrafa ve özellik etiketlerine özetlenir.</dd>
+    <dt>Kim yapıyor</dt><dd>Amazon ("Customers say"), Hepsiburada ("Değerlendirme Özeti")</dd>
+    <dt>Taraf</dt><dd>Alıcı (hızlı karar) · satıcı (yanlış özetlenme riski)</dd>
+    <dt>Shopier için</dt><dd>Yalnızca yorum hacmi yüksek ürünlerde anlamlı. İlk sürüm için erken.</dd></dl></div>
+</div>
+</section>
+
+<section id="secenekler">
+<h2>Shopier için seçenekler</h2>
+<p class="note">Karar PM ve Product Lead'indir. Seçenekler artan kapsam sırasıyla dizildi.</p>
+<div class="cards">
+  <div class="opt"><h3>A · Temel doğrulanmış yorum</h3>
+    <p>Yalnızca siparişi olan alıcı, ürün sayfasından ya da sipariş sonrası davet bağlantısından yıldız ve metin bırakır. Ürün sayfasında ortalama puan, yorum sayısı ve liste görünür. Satıcı cevap verebilir. Moderasyonu Shopier yapar.</p>
+    <div class="pm"><div><h4>Artı</h4><ul><li>En hızlı çıkış</li><li>Mevzuatla uyumlu</li><li>Moderasyon yükü düşük</li></ul></div><div><h4>Eksi</h4><ul><li>Fotoğraf olmadığı için Instagram kaynaklı güven sorununu tam çözmez</li><li>Rakiplerin gerisinde kalan bir deneyim</li></ul></div></div></div>
+  <div class="opt rec"><h3>B · Doğrulanmış yorum, fotoğraf ve davet <span class="rec-badge">Önerilen</span></h3>
+    <p>A'daki her şey, artı: yoruma fotoğraf ekleme, sipariş sonrası otomatik davet ve bir hatırlatma, "doğrulanmış alıcı" etiketi, puan filtresi. Satıcı cevap verir ve kural ihlalini bildirir ama yorumu silemez ya da gizleyemez.</p>
+    <div class="pm"><div><h4>Artı</h4><ul><li>Yorum hacmini artıran davet mekanizması baştan var</li><li>Fotoğraf, "geldiğinde fotoğraftaki gibi mi" sorusuna cevap veriyor</li><li>Satıcı sansürü olmadığı için alıcı güveni ve mevzuat uyumu yüksek</li></ul></div><div><h4>Eksi</h4><ul><li>Görsel moderasyonu ve depolama maliyeti</li><li>Bazı satıcılar olumsuz yorumu kaldıramamaktan rahatsız olabilir</li><li>Davet kanalının (e-posta, SMS, uygulama) maliyeti</li></ul></div></div></div>
+  <div class="opt"><h3>C · Satıcı ayarlı esnek model (ikas / IdeaSoft benzeri)</h3>
+    <p>Satıcı yorumları açıp kapatır. Herkesin mi yoksa yalnızca alıcıların mı yazacağını, yorumların otomatik mi yoksa satıcı onayıyla mı yayımlanacağını seçer.</p>
+    <div class="pm"><div><h4>Artı</h4><ul><li>Satıcıya kontrol hissi verir</li><li>Türk rakiplerle özellik eşitliği sağlar</li></ul></div><div><h4>Eksi</h4><ul><li>Satın almasız yorum ve satıcı onaylı yayın, yeni yönetmelik ve Reklam Kurulu kararıyla çelişme riski taşıyor</li><li>Alıcı tarafında güven düşük</li><li>Hukuk sorumluluğu Shopier'e de yansıyabilir</li></ul></div></div></div>
+</div>
+</section>
+
+<section id="kaynaklar">
+<h2>Kaynaklar</h2>
+<p class="meta">Erişim tarihi: 31 Ekim 2026.</p>
+<ol class="src">
+  <li id="k1">T.C. Ticaret Bakanlığı, Ticari Reklam ve Haksız Ticari Uygulamalar Yönetmeliği değişikliği duyurusu (RG 01.07.2026, sayı 33297). <a href="https://ticaret.gov.tr/haberler/ticaret-bakanligi-tarafindan-ticari-reklam-ve-haksiz-ticari-uygulamalar-yonetmeliginde-yapilan-degisikliklerle-tuketicilerin-aldatici-reklam-ve-ticari-uygulamalara-karsi-korunmasi-guclendiriliyor">ticaret.gov.tr</a> · ayrıca <a href="https://www.erdem-erdem.av.tr/bilgi-bankasi/ticari-reklam-ve-haksiz-ticari-uygulamalar-yonetmeliginde-kapsamli-degisiklikler-yapildi">Erdem &amp; Erdem özeti</a></li>
+  <li id="k2">Reklam Kurulu'nun Trendyol ve Hepsiburada'ya yorum cezası haberi. <a href="https://www.forbes.com.tr/makale/reklam-kurulu-ndan-hepsiburada-ve-trendyol-a-ceza">Forbes Türkiye</a> · <a href="https://www.cnbce.com/haberler/hepsiburadaya-yorum-manipulasyonu-trendyola-olumsuz-yorum-sansuru-cezasi-h9405">CNBC-e</a></li>
+  <li id="k3">ikas Destek, How to Activate or Manage Product Reviews. <a href="https://support.ikas.com/how-to-activate-or-manage-product-reviews">support.ikas.com</a></li>
+  <li id="k4">IdeaSoft Yardım, Yorum ve Öneriler. <a href="https://www.ideasoft.com.tr/yardim/yorum-ve-oneriler/">ideasoft.com.tr</a></li>
+  <li id="k5">Shopify Help Center, Shop product reviews. <a href="https://help.shopify.com/en/manual/products/product-reviews">help.shopify.com</a></li>
+  <li id="k6">Judge.me Product Reviews, Shopify App Store. <a href="https://apps.shopify.com/judgeme">apps.shopify.com/judgeme</a></li>
+  <li id="k7">WooCommerce Docs, Product Reviews. <a href="https://woocommerce.com/document/product-reviews/">woocommerce.com</a></li>
+  <li id="k8">Etsy Help, How the Review System Works for Sellers. <a href="https://help.etsy.com/hc/en-gb/articles/360000572708-How-the-Review-System-Works-for-Sellers">help.etsy.com</a></li>
+  <li id="k9">About Amazon, AI-generated review highlights. <a href="https://www.aboutamazon.com/news/amazon-ai/amazon-ai-generated-review-highlights">aboutamazon.com</a></li>
+  <li id="k10">Webrazzi, Hepsiburada'da yapay zekâ özellikleri: yorum özeti ve hızlı yorum (12.09.2023). <a href="https://webrazzi.com/2023/09/12/hepsiburada-yapay-zeka-ozellikleri-yorumlar-icin-ozet-ve-hizli-yorum-yapma/">webrazzi.com</a></li>
+  <li id="k11">ikas Blog, Mart ayı güncellemesi (ürün yorum otomasyonu). <a href="https://ikas.com/tr/blog/ikas-mart-ayi-guncellemesi">ikas.com</a> · müşteri hikâyesi: <a href="https://ikas.com/tr/mayi-tuz">Mayi Tuz</a></li>
+  <li id="k12">IdeaSoft Yardım, PeopleSay Yorum ve Loyalty App Entegrasyonu. <a href="https://www.ideasoft.com.tr/yardim/peoplesay-yorum-ve-loyalty-app-entegrasyonu/">ideasoft.com.tr</a></li>
+  <li id="k13">Shopify Community, Shopify Product Reviews App Discontinued. <a href="https://community.shopify.com/t/shopify-product-reviews-app-discontinued/262560/2">community.shopify.com</a></li>
+  <li id="k14">Wix Help Center, Wix Stores: Managing Wix Reviews. <a href="https://support.wix.com/en/article/wix-stores-managing-wix-reviews">support.wix.com</a> · <a href="https://support.wix.com/en/article/wix-stores-request-restricting-reviews-to-verified-purchasers-in-wix-reviews">doğrulanmış alıcı sınırlaması</a></li>
+  <li id="k15">Wix Developers, Reviews and Moderation flow. <a href="https://dev.wix.com/docs/api-reference/crm/community/feedback-moderation/reviews-moderation-business-flow">dev.wix.com</a></li>
+  <li id="k16">Etsy, House Rules / Reviews Policy. <a href="https://www.etsy.com/legal/buyers/">etsy.com/legal</a> · <a href="https://help.etsy.com/hc/en-us/articles/115013197687">How to Leave a Review on Etsy</a></li>
+  <li id="k17">Modern Distribution Management, Amazon'un yapay zekâ özetlerinin yanıltıcı olabildiğine dair Bloomberg kaynaklı haber. <a href="https://www.mdm.com/news/technology/ecommerce/report-amazons-ai-is-writing-misleading-product-reviews/">mdm.com</a></li>
+  <li id="k18">BirGün, Trendyol'un "olumsuz eleştirileri yayınlamıyor" iddialarına açıklaması. <a href="https://www.birgun.net/haber/trendyol-dan-olumsuz-elestirileri-yayinlamiyor-iddialarina-iliskin-aciklama-354125">birgun.net</a></li>
+</ol>
+</section>
+
+<section id="sorular">
+<h2>Açık sorular</h2>
+<ul>
+  <li><strong>Misafir alıcı:</strong> Shopier'de alıcıların ne kadarı hesapsız ödeme yapıyor? Misafir alıcı yorumu sipariş e-postasındaki tek kullanımlık bağlantıyla mı yazacak? (Shopier iç verisi gerekli.)</li>
+  <li><strong>Kapsam:</strong> Yorum yalnızca ürüne mi olacak, yoksa satıcı ya da dükkan puanı da olacak mı? Yönetmelik, farklı başlıklardaki yorumların aynı alanda gösterilmesini istiyor.</li>
+  <li><strong>Hukuk:</strong> Yönetmeliğin tam metninde yorumların sıralanması, satıcının itiraz hakkı ve Shopier'in "aracı hizmet sağlayıcı" olarak yükümlülükleri ne? Bu raporda yalnızca Bakanlık duyurusu ve hukuk bürosu özeti okundu. Hukuk ekibi teyit etmeli.</li>
+  <li><strong>Satıcı yetkisi:</strong> Satıcının dükkanında yorumları tamamen kapatabilmesine izin verilecek mi?</li>
+  <li><strong>Davet kanalı:</strong> Davet e-posta, SMS ya da "shop by shopier" uygulama bildirimi ile mi gönderilecek? Teslimat bilgisi (kargo "teslim edildi" durumu) Shopier'de güvenilir biçimde var mı?</li>
+  <li><strong>Moderasyon:</strong> Fotoğraf ve metin moderasyonunu kim, hangi araçla yapacak? Mevcut operasyon kapasitesi ne?</li>
+  <li><strong>Mevcut durum:</strong> Shopier'de bugün herhangi bir yorum ya da puan altyapısı var mı (ör. Shop uygulamasında)? Herkese açık kaynaklarda bulunamadı.</li>
+  <li><strong>Rakipler:</strong> Ticimax ve T-Soft'un yorum özellikleri doğrulanamadı. Gerekirse demo hesabıyla incelenebilir.</li>
+</ul>
+</section>
+
+<section id="revizyon">
+<h2>Revizyon geçmişi</h2>
+<ul>
+  <li>31.10.2026 · Sürüm 1 · İlk tur hazırlandı.</li>
+</ul>
+</section>
+
+</div>
+</body>
+</html>
