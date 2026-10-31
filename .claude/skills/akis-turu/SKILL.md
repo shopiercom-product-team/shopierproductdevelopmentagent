@@ -40,8 +40,10 @@ Sonra `Bekleyen: PM` yap ve PM'e sun (aşağıdaki mesaj).
 ### Bekleyen = PM
 
 PM, `durum.md`'deki PM Slack ID'sidir. Thread'i oku, `Son sunum ts`'den sonra bu ID'den gelen cevaplara bak:
-- **"Onay" ile başlıyorsa:** onay tablosuna PM onayını işle, `Bekleyen: Product Lead` yap, Product Lead'e sun.
-- **"Revize" ile başlıyorsa:** yorumu revize geçmişine ekle, revize sayısını artır, `Bekleyen: Ajan` yap. Thread'e "Revize alındı, <ajan> düzeltiyor" yaz. Aynı turda ajanı çağırma; bir sonraki tur çağırır. (Revize sayısı 5'i geçtiyse ajanı çağırmadan Product Lead'e bildir ve bekle.)
+- **"Onay" ile başlıyorsa:** onay tablosuna PM onayını işle. Sonra `ayarlar.md` › Onay kuralı'na bak:
+  - **Yalnızca PM onayı gereken aşama (Araştırma, Tasarım, PRD):** aşama kapandı. Sonraki aşamaya geç (`Aşama` bir ilerler, `Bekleyen: Ajan`, revize sayısı 0). Thread'e "<aşama> PM onayıyla tamamlandı, <sonraki aşama> başlıyor" yaz.
+  - **Product Lead onayı da gereken aşama (Prototip, CTO değerlendirmesi):** `Bekleyen: Product Lead` yap, Product Lead'e sun.
+- **"Revize" ile başlıyorsa:** yorumu revize geçmişine ekle, revize sayısını artır, `Bekleyen: Ajan` yap. Thread'e "Revize alındı, <ajan> düzeltiyor" yaz. Aynı turda ajanı çağırma; bir sonraki tur çağırır. (Revize sayısı 5'i geçtiyse ajanı çağırmadan Product Lead'e bildir ve bekle; bu, onay gerektirmeyen aşamalarda da geçerli.)
 - Cevap yoksa bir şey yapma.
 
 ### Bekleyen = Product Lead
@@ -123,9 +125,9 @@ Bu dosyanın sahibi Koordinatör'dür.
 
 | Aşama | PM onayı | Product Lead onayı |
 |---|---|---|
-| 1 · Araştırma | - | - |
-| 2 · Tasarım | - | - |
-| 3 · PRD | - | - |
+| 1 · Araştırma | - | gerekmez |
+| 2 · Tasarım | - | gerekmez |
+| 3 · PRD | - | gerekmez |
 | 4 · Prototip | - | - |
 | 5 · CTO değerlendirmesi | - | - |
 

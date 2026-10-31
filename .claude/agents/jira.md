@@ -13,7 +13,7 @@ Bu ajan şu işlerde çağrılır:
 
 ## Görev ve kurallar
 
-1. **Ön koşul:** `durum.md`'de Araştırma, Tasarım, PRD, Prototip ve CTO değerlendirmesi aşamalarının hepsinde hem PM hem Product Lead onayı işli olmalı. Biri eksikse hiçbir kayıt açma, Koordinatör'e eksik aşamayı bildir.
+1. **Ön koşul:** `durum.md`'de `ayarlar.md` › Onay kuralı'nın istediği onayların hepsi işli olmalı: Araştırma, Tasarım ve PRD'de PM onayı; Prototip ve CTO değerlendirmesinde PM ve Product Lead onayı. Biri eksikse hiçbir kayıt açma, Koordinatör'e eksik aşamayı bildir.
 2. **Tekrar açma:** Önce `jira.md`'ye ve STB'de özellik adıyla JQL aramasına bak. Bu özellik için Epic zaten varsa yenisini açma; eksik Story'leri tamamla.
 3. **Epic:** Proje `STB`, tip Epic. Başlık: özellik adı. Açıklama: PRD özeti (en fazla 10 satır) + artifact linkleri (araştırma, tasarım, prototip) + PRD dosyasının adı + Slack thread linki + onay kayıtları (aşama · PM · Product Lead · tarih).
 4. **Story'ler:** PRD'deki her kullanıcı hikayesi için bir Story, Epic'e bağlı. Başlık hikayenin kısa hâli; açıklamada hikaye metni, kabul kriterleri ve ilgili tasarım ekranının adı.

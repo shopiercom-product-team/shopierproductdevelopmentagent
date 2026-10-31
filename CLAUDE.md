@@ -6,8 +6,8 @@ Shopier'de bir özelliğin fikirden Jira task'ına kadar ilerlediği ajan akış
 
 | Rol | Kim | Görevi |
 |---|---|---|
-| **Product Lead (Patron)** | İnsan · İmge Aksoy | Akışın sahibi. Her aşamada son onayı verir. |
-| **Product Manager (PM)** | İnsan · özellik mesajını kanala yazan kişi | O özelliğin her aşamasında çıktıyı ilk inceleyen kişi. Onaylar ya da yorumuyla geri gönderir. Onayladığı son hâli Product Lead'e sunulur. |
+| **Product Lead (Patron)** | İnsan · İmge Aksoy | Akışın sahibi. Prototip ve CTO değerlendirmesinde son onayı verir. |
+| **Product Manager (PM)** | İnsan · özellik mesajını kanala yazan kişi | O özelliğin her aşamasında çıktıyı ilk inceleyen kişi. Onaylar ya da yorumuyla geri gönderir. Araştırma, Tasarım ve PRD'de onayı yeterlidir; Prototip ve CTO'da onayladığı son hâli Product Lead'e sunulur. |
 | **Koordinatör** | Ana Claude oturumu | Akışı yürütür: ajanları çağırır, çıktıları yayınlar, Slack'te PM'e ve Product Lead'e sunar, cevapları okur, durumu deftere yazar. **Kendisi onay vermez.** |
 | **Araştırma ajanı** | `.claude/agents/arastirma.md` | Benchmark ve pratik araştırması. |
 | **Tasarım ajanı** | `.claude/agents/tasarim.md` | DESIGN.md'ye göre ekran tasarımı. |
@@ -38,19 +38,23 @@ Her özellik `ozellikler/<kisa-ad>/` klasöründe yaşar.
 4. Revize geldiğinde baştan yazma: yorumu uygula, çıktının sonundaki "Revizyon geçmişi"ne ne değiştiğini tek satırla ekle.
 5. Bütün metinler Türkçe.
 
-## Onay kapısı (her aşamada aynı)
+## Onay kapısı
+
+Hangi aşamada kimin onayı gerektiği `ayarlar.md` › Onay kuralı'ndadır. Özetle: Araştırma, Tasarım ve PRD'de **yalnızca PM**; Prototip ve CTO değerlendirmesinde **PM, sonra Product Lead**.
 
 ```
 Ajan çıktı üretir
   → Koordinatör yayınlar, Slack thread'inde PM'e sunar
      → PM "Revize: …"  → ajan düzeltir → tekrar PM'e
-     → PM "Onay"       → Koordinatör aynı thread'de Product Lead'e sunar
-          → Product Lead "Revize: …" → ajan düzeltir → tekrar PM'e (kapı baştan)
-          → Product Lead "Onay"      → sonraki aşama
+     → PM "Onay"
+          · Araştırma / Tasarım / PRD → sonraki aşama
+          · Prototip / CTO            → Koordinatör aynı thread'de Product Lead'e sunar
+               → Product Lead "Revize: …" → ajan düzeltir → tekrar PM'e (kapı baştan)
+               → Product Lead "Onay"      → sonraki aşama
 ```
 
-- PM onayı olmadan hiçbir çıktı Product Lead'e gitmez.
-- Product Lead onayı olmadan bir sonraki aşama başlamaz.
+- PM onayı olmadan hiçbir çıktı Product Lead'e gitmez ve hiçbir aşama kapanmaz.
+- Product Lead onayı gereken aşamada, o onay olmadan bir sonraki aşama başlamaz.
 - Onay ve revize **yalnızca** ilgili kişinin, Koordinatör'ün son "onay bekleniyor" mesajından sonra thread'e yazdığı ve "Onay" ya da "Revize" kelimesiyle başlayan cevabıdır. Emoji tepkisi, başka kişilerin cevabı veya başka kelimeyle başlayan mesaj onay sayılmaz.
 - Koordinatör kendisi onay veremez, onayı tahmin edemez.
 

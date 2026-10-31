@@ -1,13 +1,13 @@
 # Shopier Ürün Geliştirme Akışı
 
-Slack'te yazılan bir özellik fikrini araştırma → tasarım → PRD → prototip → CTO değerlendirmesi → Jira sırasıyla ilerleten ajan akışı. Her aşama önce PM'in, sonra Product Lead'in onayıyla geçer.
+Slack'te yazılan bir özellik fikrini araştırma → tasarım → PRD → prototip → CTO değerlendirmesi → Jira sırasıyla ilerleten ajan akışı. Her aşama PM onayıyla geçer; Prototip ve CTO değerlendirmesinde ayrıca Product Lead onayı gerekir.
 
 ## Nasıl kullanılır
 
 1. PM `#claude` kanalına özelliği bir mesaj olarak yazar. Mesajı yazan kişi o özelliğin PM'idir.
 2. Herhangi biri o mesajın thread'ine `Başlat` yazar.
 3. Akış her 5 dakikada bir thread'i okur; çıktıları thread'e koyar ve onay ister.
-4. Her aşamada önce PM, sonra İmge Aksoy (Product Lead) etiketlenir; thread'e `Onay` ya da `Revize: <yorum>` yazarlar.
+4. Her aşamada PM etiketlenir. Araştırma, Tasarım ve PRD'de PM'in onayı yeter; Prototip ve CTO değerlendirmesinde PM'den sonra İmge Aksoy (Product Lead) da etiketlenir. Cevap: `Onay` ya da `Revize: <yorum>`.
 5. Bütün aşamalar onaylanınca Shopier Test Board'da (STB) Epic ve Story'ler açılır, linkler thread'e gelir.
 
 ## Dosyalar

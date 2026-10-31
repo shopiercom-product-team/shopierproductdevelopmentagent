@@ -12,7 +12,20 @@ Bu dosyanın sahibi Product Lead'dir. Ajanlar ve Koordinatör bu dosyayı okur, 
 | Başlatma kelimesi | `Başlat` (kanaldaki herhangi biri, özellik mesajının thread'ine) |
 | Onay / revize | `Onay` · `Revize: <yorum>` |
 
-Özellik mesajını Product Lead yazdıysa o özellikte PM ve Product Lead aynı kişidir; iki onay da ondan beklenir.
+## Onay kuralı
+
+| Aşama | Gereken onay |
+|---|---|
+| 1 · Araştırma | PM |
+| 2 · Tasarım | PM |
+| 3 · PRD | PM |
+| 4 · Prototip | PM → Product Lead (İmge) |
+| 5 · CTO değerlendirmesi | PM → Product Lead (İmge) |
+| 6 · Jira | Ön koşul: yukarıdaki onayların hepsi |
+
+Yalnızca PM onayı gereken aşamalarda PM'in "Onay"ı aşamayı kapatır; Product Lead'e sunulmaz. Product Lead isterse bu aşamalarda da thread'e yorum yazabilir ama akışı bekletmez.
+
+Özellik mesajını Product Lead yazdıysa o özellikte PM ve Product Lead aynı kişidir; iki onay gereken aşamalarda iki onay da ondan beklenir.
 
 ## Jira
 
