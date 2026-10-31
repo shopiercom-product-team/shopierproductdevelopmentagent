@@ -6,7 +6,7 @@ Akışın Slack'ten tetiklenmesi için bu görev her 15 dakikada bir çalışır
 |---|---|
 | Ad | Shopier ürün akışı turu |
 | Klasör | `/Users/imgeaksoy/Desktop/shopier-urun-akisi` |
-| Zaman | Hafta içi 09:00–19:00, 15 dakikada bir (`*/15 9-18 * * 1-5`) |
+| Zaman | Her gün, her saat, 15 dakikada bir (`*/15 * * * *`) |
 
 ## Prompt
 

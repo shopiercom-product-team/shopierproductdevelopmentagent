@@ -41,5 +41,5 @@ Link yoksa Tasarım ajanı yalnızca DESIGN.md ile çalışır.
 
 ## Çalışma
 
-- Akış turu: `akis-turu` skill'i, zamanlanmış görevle her 15 dakikada bir (hafta içi 09:00–19:00). Kurulum: `zamanlanmis-gorev.md`.
+- Akış turu: `akis-turu` skill'i, zamanlanmış görevle her gün, günün her saatinde 15 dakikada bir. Kurulum: `zamanlanmis-gorev.md`.
 - Bir aşamada en fazla 5 revize turu; 6.'da Koordinatör durumu Product Lead'e bildirir ve bekler.
