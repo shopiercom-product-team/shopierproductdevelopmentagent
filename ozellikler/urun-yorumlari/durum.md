@@ -11,9 +11,9 @@ Bu dosyanın sahibi Koordinatör'dür.
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
 | Aşama | 5 · CTO değerlendirmesi |
-| Bekleyen | Ajan |
+| Bekleyen | PM |
 | Revize sayısı | 0 |
-| Son sunum ts | 1793441624.214869 |
+| Son sunum ts | 1793442220.535339 |
 | Durum | Devam ediyor |
 | Not | - |
 
