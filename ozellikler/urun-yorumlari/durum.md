@@ -11,10 +11,10 @@ Bu dosyanın sahibi Koordinatör'dür.
 | Başlatan | İmge Aksoy · U0BLV2VFG1Y |
 | Başlatma | 2026-10-31 10:28 |
 | Aşama | 6 · Jira |
-| Bekleyen | Ajan |
+| Bekleyen | - |
 | Revize sayısı | 0 |
 | Son sunum ts | 1793442522.537189 |
-| Durum | Devam ediyor |
+| Durum | Tamamlandı |
 | Not | - |
 
 ## Özellik tanımı
@@ -30,7 +30,7 @@ Dükkan sayfalarındaki ürün detay sayfasından product reviewlarının yapıl
 | 3 · PRD | prd-urun-yorumlari.md | https://shopierproducttest.slack.com/files/U0BLV2VFG1Y/F0CDM37P1K7/prd-urun-yorumlari.md |
 | 4 · Prototip | prototip.html | https://claude.ai/artifact/HdN9PDdo7gMsjssbH6pph4 |
 | 5 · CTO değerlendirmesi | (manuel) | - |
-| 6 · Jira | jira.md | - |
+| 6 · Jira | jira.md | https://shopier.atlassian.net/browse/STB-189 |
 
 ## Onaylar
 
